@@ -138,3 +138,31 @@ df_mensuelles.loc["Total"] = ["TOTAL", charges_mensuelles]
 st.dataframe(df_mensuelles)
 
 st.markdown(f"💸 **Part Mensuelle Associé : {part_mensuelle_associe:,.0f} MAD**")
+
+
+# === Calcul du profit net ===
+st.sidebar.header("📈 Estimation du Profit Net")
+
+# Nombre de clients par jour
+nb_clients_jour = st.sidebar.number_input("Nombre de clients par jour", value=50)
+
+# Marges unitaires
+marge_crepe = prix_crepe - cout_crepe
+marge_jus = prix_jus - cout_jus
+marge_cafe = prix_cafe - cout_cafe
+marge_glace = prix_glace - cout_glace
+
+# Marge par client
+marge_par_client = (
+    marge_crepe * conso_crepe +
+    marge_jus * conso_jus +
+    marge_cafe * conso_cafe +
+    marge_glace * conso_glace
+)
+
+# Profit net mensuel
+profit_net_mensuel = marge_par_client * nb_clients_jour * 30
+
+# Affichage
+st.subheader("💰 Profit Net Estimé")
+st.metric(label="Profit net mensuel (MAD)", value=f"{profit_net_mensuel:,.0f}")
