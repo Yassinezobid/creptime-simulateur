@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -47,9 +46,18 @@ panier_moyen = (
 
 # === Paramètres de gestion ===
 st.sidebar.header("⚙️ Paramètres de gestion")
-clients_min = st.sidebar.slider("Clients/jour (min)", 5, 50, 15)
-clients_max = st.sidebar.slider("Clients/jour (max)", 50, 100, 80)
-pas = st.sidebar.slider("Pas variation", 1, 10, 5)
+commandes_crepe_min = st.sidebar.slider("Commandes crêpe (min)", 0, 300, 50)
+commandes_crepe_max = st.sidebar.slider("Commandes crêpe (max)", 0, 300, 150)
+commandes_crepe_pas = st.sidebar.slider("Pas commandes crêpe", 1, 50, 25)
+
+commandes_jus_min = st.sidebar.slider("Commandes jus (min)", 0, 300, 30)
+commandes_jus_max = st.sidebar.slider("Commandes jus (max)", 0, 300, 100)
+commandes_jus_pas = st.sidebar.slider("Pas commandes jus", 1, 50, 25)
+
+commandes_cafe_min = st.sidebar.slider("Commandes café (min)", 0, 300, 20)
+commandes_cafe_max = st.sidebar.slider("Commandes café (max)", 0, 300, 100)
+commandes_cafe_pas = st.sidebar.slider("Pas commandes café", 1, 50, 25)
+
 jours_mois = st.sidebar.slider("Jours d'activité par mois", 20, 31, 30)
 associes = st.sidebar.number_input("Nombre d'associés", value=6)
 impot_taux = st.sidebar.slider("Taux impôt (%)", 0, 50, 20) / 100
@@ -84,23 +92,34 @@ charges_mensuelles = sum([
 part_mensuelle_associe = charges_mensuelles / associes
 
 # === Simulation ===
-clients_range = list(range(clients_min, clients_max + 1, pas))
 data = []
-
-for clients in clients_range:
-    revenu_brut = clients * panier_moyen * jours_mois
-    benefice_avant_impot = revenu_brut - charges_mensuelles
-    impot = max(0, benefice_avant_impot * impot_taux)
-    profit_net = benefice_avant_impot - impot
-    part_associe = profit_net / associes
-    data.append([
-        clients, panier_moyen, revenu_brut, benefice_avant_impot,
-        impot, profit_net, part_associe
-    ])
+for nb_crepe in range(commandes_crepe_min, commandes_crepe_max + 1, commandes_crepe_pas):
+    for nb_jus in range(commandes_jus_min, commandes_jus_max + 1, commandes_jus_pas):
+        for nb_cafe in range(commandes_cafe_min, commandes_cafe_max + 1, commandes_cafe_pas):
+            revenu_brut = (
+                nb_crepe * prix_crepe +
+                nb_jus * prix_jus +
+                nb_cafe * prix_cafe
+            ) * jours_mois
+            cout_total = (
+                nb_crepe * cout_crepe +
+                nb_jus * cout_jus +
+                nb_cafe * cout_cafe
+            ) * jours_mois
+            benefice_avant_impot = revenu_brut - cout_total - charges_mensuelles
+            impot = max(0, benefice_avant_impot * impot_taux)
+            profit_net = benefice_avant_impot - impot
+            part_associe = profit_net / associes
+            data.append([
+                nb_crepe, nb_jus, nb_cafe,
+                revenu_brut, cout_total, benefice_avant_impot,
+                impot, profit_net, part_associe
+            ])
 
 df = pd.DataFrame(data, columns=[
-    "Clients/Jour", "Panier Moyen Net", "Revenu Brut",
-    "Bénéfice Avant Impôt", "Impôt", "Profit Net", "Part par Associé"
+    "Cmd Crêpes", "Cmd Jus", "Cmd Café",
+    "Revenu Brut", "Coût MP", "Bénéfice Avant Impôt",
+    "Impôt", "Profit Net", "Part par Associé"
 ])
 
 # === Affichage ===
@@ -109,10 +128,10 @@ st.dataframe(df.style.format("{:,.0f}"))
 
 st.subheader("📈 Graphique : Profit Net & Part Associé")
 fig, ax = plt.subplots(figsize=(12, 5))
-ax.bar(df["Clients/Jour"], df["Profit Net"], color='orange', label="Profit Net")
-ax.plot(df["Clients/Jour"], df["Part par Associé"], marker='o', color='green', label="Part par Associé")
-ax.set_title("Profit Net mensuel selon la fréquentation")
-ax.set_xlabel("Clients par jour")
+ax.bar(df.index, df["Profit Net"], color='orange', label="Profit Net")
+ax.plot(df.index, df["Part par Associé"], marker='o', color='green', label="Part par Associé")
+ax.set_title("Profit Net mensuel selon les commandes")
+ax.set_xlabel("Variations de commandes")
 ax.set_ylabel("MAD")
 ax.grid(True)
 ax.legend()
@@ -138,31 +157,3 @@ df_mensuelles.loc["Total"] = ["TOTAL", charges_mensuelles]
 st.dataframe(df_mensuelles)
 
 st.markdown(f"💸 **Part Mensuelle Associé : {part_mensuelle_associe:,.0f} MAD**")
-
-
-# === Calcul du profit net ===
-st.sidebar.header("📈 Estimation du Profit Net")
-
-# Nombre de clients par jour
-nb_clients_jour = st.sidebar.number_input("Nombre de clients par jour", value=50)
-
-# Marges unitaires
-marge_crepe = prix_crepe - cout_crepe
-marge_jus = prix_jus - cout_jus
-marge_cafe = prix_cafe - cout_cafe
-marge_glace = prix_glace - cout_glace
-
-# Marge par client
-marge_par_client = (
-    marge_crepe * conso_crepe +
-    marge_jus * conso_jus +
-    marge_cafe * conso_cafe +
-    marge_glace * conso_glace
-)
-
-# Profit net mensuel
-profit_net_mensuel = marge_par_client * nb_clients_jour * 30
-
-# Affichage
-st.subheader("💰 Profit Net Estimé")
-st.metric(label="Profit net mensuel (MAD)", value=f"{profit_net_mensuel:,.0f}")
