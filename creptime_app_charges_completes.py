@@ -275,7 +275,7 @@ avg_price = (prix_crepe + prix_gaufre + prix_pancake + prix_glace + prix_bowl + 
 avg_cost  = (cout_crepe + cout_gaufre + cout_pancake + cout_glace + cout_bowl + cout_jus + cout_boisson) / 7
 
 # Charge mensuelle fixe (moyenne)
-monthly_charges = ch_moy  # déjà calculé
+monthly_charges = charges_mensuelles
 
 rows = []
 for cmds in range(10, 101, 10):
