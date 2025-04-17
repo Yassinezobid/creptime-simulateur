@@ -59,14 +59,38 @@ cout_boisson_chaude_max = st.sidebar.number_input("Coût boisson chaude MAX (MP)
 
 # === Paramètres de gestion ===
 st.sidebar.header("⚙️ Commandes journalières")
-commandes = {
-    "crepe": st.sidebar.number_input("Commandes crêpe", value=100),
-    "gaufre": st.sidebar.number_input("Commandes gaufre", value=80),
-    "pancake": st.sidebar.number_input("Commandes pancake", value=60),
-    "glace": st.sidebar.number_input("Commandes coupe glacée", value=50),
-    "bowl": st.sidebar.number_input("Commandes bowl/salade", value=40),
-    "jus": st.sidebar.number_input("Commandes jus/smoothie", value=70),
-    "boisson": st.sidebar.number_input("Commandes boisson chaude", value=90),
+st.sidebar.markdown("### Plage Commandes par jour")
+# Crêpes
+crepe_min = st.sidebar.number_input("Commandes crêpe MIN", value=80)
+crepe_max = st.sidebar.number_input("Commandes crêpe MAX", value=120)
+# Gaufres
+gaufre_min = st.sidebar.number_input("Commandes gaufre MIN", value=60)
+gaufre_max = st.sidebar.number_input("Commandes gaufre MAX", value=100)
+# Pancakes
+pancake_min = st.sidebar.number_input("Commandes pancake MIN", value=50)
+pancake_max = st.sidebar.number_input("Commandes pancake MAX", value=70)
+# Coupes Glacées
+glace_min = st.sidebar.number_input("Commandes coupe glacée MIN", value=40)
+glace_max = st.sidebar.number_input("Commandes coupe glacée MAX", value=60)
+# Salades & Bowls
+bowl_min = st.sidebar.number_input("Commandes bowl/salade MIN", value=30)
+bowl_max = st.sidebar.number_input("Commandes bowl/salade MAX", value=50)
+# Smoothies & Jus
+jus_min = st.sidebar.number_input("Commandes jus/smoothie MIN", value=50)
+jus_max = st.sidebar.number_input("Commandes jus/smoothie MAX", value=90)
+# Boissons Chaudes
+boisson_min = st.sidebar.number_input("Commandes boisson chaude MIN", value=70)
+boisson_max = st.sidebar.number_input("Commandes boisson chaude MAX", value=110)
+
+commandes_min = {
+    "crepe": crepe_min, "gaufre": gaufre_min,
+    "pancake": pancake_min, "glace": glace_min,
+    "bowl": bowl_min, "jus": jus_min, "boisson": boisson_min
+}
+commandes_max = {
+    "crepe": crepe_max, "gaufre": gaufre_max,
+    "pancake": pancake_max, "glace": glace_max,
+    "bowl": bowl_max, "jus": jus_max, "boisson": boisson_max
 }
 
 jours_mois = st.sidebar.slider("Jours d'activité par mois", 20, 31, 30)
@@ -143,41 +167,41 @@ charges_mensuelles_max = sum([
 
 # === Simulation ===
 revenu_brut_min = (
-    commandes["crepe"] * prix_crepe_min +
-    commandes["gaufre"] * prix_gaufre_min +
-    commandes["pancake"] * prix_pancake_min +
-    commandes["glace"] * prix_glace_min +
-    commandes["bowl"] * prix_bowl_min +
-    commandes["jus"] * prix_jus_min +
-    commandes["boisson"] * prix_boisson_chaude_min
+    commandes_min["crepe"] * prix_crepe_min +
+    commandes_min["gaufre"] * prix_gaufre_min +
+    commandes_min["pancake"] * prix_pancake_min +
+    commandes_min["glace"] * prix_glace_min +
+    commandes_min["bowl"] * prix_bowl_min +
+    commandes_min["jus"] * prix_jus_min +
+    commandes_min["boisson"] * prix_boisson_chaude_min
 ) * jours_mois
 revenu_brut_max = (
-    commandes["crepe"] * prix_crepe_max +
-    commandes["gaufre"] * prix_gaufre_max +
-    commandes["pancake"] * prix_pancake_max +
-    commandes["glace"] * prix_glace_max +
-    commandes["bowl"] * prix_bowl_max +
-    commandes["jus"] * prix_jus_max +
-    commandes["boisson"] * prix_boisson_chaude_max
+    commandes_max["crepe"] * prix_crepe_max +
+    commandes_max["gaufre"] * prix_gaufre_max +
+    commandes_max["pancake"] * prix_pancake_max +
+    commandes_max["glace"] * prix_glace_max +
+    commandes_max["bowl"] * prix_bowl_max +
+    commandes_max["jus"] * prix_jus_max +
+    commandes_max["boisson"] * prix_boisson_chaude_max
 ) * jours_mois
 
 cout_total_min = (
-    commandes["crepe"] * cout_crepe_min +
-    commandes["gaufre"] * cout_gaufre_min +
-    commandes["pancake"] * cout_pancake_min +
-    commandes["glace"] * cout_glace_min +
-    commandes["bowl"] * cout_bowl_min +
-    commandes["jus"] * cout_jus_min +
-    commandes["boisson"] * cout_boisson_chaude_min
+    commandes_min["crepe"] * cout_crepe_min +
+    commandes_min["gaufre"] * cout_gaufre_min +
+    commandes_min["pancake"] * cout_pancake_min +
+    commandes_min["glace"] * cout_glace_min +
+    commandes_min["bowl"] * cout_bowl_min +
+    commandes_min["jus"] * cout_jus_min +
+    commandes_min["boisson"] * cout_boisson_chaude_min
 ) * jours_mois
 cout_total_max = (
-    commandes["crepe"] * cout_crepe_max +
-    commandes["gaufre"] * cout_gaufre_max +
-    commandes["pancake"] * cout_pancake_max +
-    commandes["glace"] * cout_glace_max +
-    commandes["bowl"] * cout_bowl_max +
-    commandes["jus"] * cout_jus_max +
-    commandes["boisson"] * cout_boisson_chaude_max
+    commandes_max["crepe"] * cout_crepe_max +
+    commandes_max["gaufre"] * cout_gaufre_max +
+    commandes_max["pancake"] * cout_pancake_max +
+    commandes_max["glace"] * cout_glace_max +
+    commandes_max["bowl"] * cout_bowl_max +
+    commandes_max["jus"] * cout_jus_max +
+    commandes_max["boisson"] * cout_boisson_chaude_max
 ) * jours_mois
 
 benefice_avant_impot_min = revenu_brut_min - cout_total_max - charges_mensuelles_max
