@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="Crêp'Time - Simulateur Mensuel", layout="wide")
 st.title("🥞 Simulateur de Profit Net Mensuel")
+# Logo de l’application
+st.image("logo.png", width=200)
 
 # === Paramètres Produits ===
 st.sidebar.header("💾 Paramètres Produits")
@@ -21,6 +23,76 @@ prix_jus = st.sidebar.number_input("Prix jus/smoothie (MAD)", value=20)
 cout_jus = st.sidebar.number_input("Coût jus/smoothie (MAD)", value=7)
 prix_boisson = st.sidebar.number_input("Prix boisson chaude (MAD)", value=15)
 cout_boisson = st.sidebar.number_input("Coût boisson chaude (MAD)", value=5)
+
+# === Charges d'Investissement ===
+st.sidebar.header("🏗️ Charges d'Investissement")
+st.sidebar.markdown("Saisissez la fourchette pour chaque poste d'investissement")
+
+# Équipements
+crepier_inv_min = st.sidebar.number_input("Crépier MIN (MAD)", value=6000)
+crepier_inv_max = st.sidebar.number_input("Crépier MAX (MAD)", value=8000)
+gauffre_inv_min = st.sidebar.number_input("Gauffrier MIN (MAD)", value=3000)
+gauffre_inv_max = st.sidebar.number_input("Gauffrier MAX (MAD)", value=4500)
+plaque_inv_min = st.sidebar.number_input("Plaque & Pancakes MIN (MAD)", value=500)
+plaque_inv_max = st.sidebar.number_input("Plaque & Pancakes MAX (MAD)", value=800)
+blender_inv_min = st.sidebar.number_input("Blender MIN (MAD)", value=1000)
+blender_inv_max = st.sidebar.number_input("Blender MAX (MAD)", value=2000)
+extracteur_inv_min = st.sidebar.number_input("Extracteur de jus MIN (MAD)", value=1500)
+extracteur_inv_max = st.sidebar.number_input("Extracteur de jus MAX (MAD)", value=3000)
+cafe_inv_min = st.sidebar.number_input("Machine à café MIN (MAD)", value=30000)
+cafe_inv_max = st.sidebar.number_input("Machine à café MAX (MAD)", value=30000)
+vitrine_inv_min = st.sidebar.number_input("Vitrine 2 glaces MIN (MAD)", value=15000)
+vitrine_inv_max = st.sidebar.number_input("Vitrine 2 glaces MAX (MAD)", value=20000)
+frigo_inv_min = st.sidebar.number_input("Réfrigérateur MIN (MAD)", value=5000)
+frigo_inv_max = st.sidebar.number_input("Réfrigérateur MAX (MAD)", value=5000)
+congel_inv_min = st.sidebar.number_input("Congélateur MIN (MAD)", value=3000)
+congel_inv_max = st.sidebar.number_input("Congélateur MAX (MAD)", value=3000)
+presse_inv_min = st.sidebar.number_input("Presse agrume MIN (MAD)", value=1000)
+presse_inv_max = st.sidebar.number_input("Presse agrume MAX (MAD)", value=2500)
+ustensiles_inv_min = st.sidebar.number_input("Ustensiles MIN (MAD)", value=4000)
+ustensiles_inv_max = st.sidebar.number_input("Ustensiles MAX (MAD)", value=4000)
+produits_inv_min = st.sidebar.number_input("Produits initiaux MIN (MAD)", value=20000)
+produits_inv_max = st.sidebar.number_input("Produits initiaux MAX (MAD)", value=20000)
+
+# Aménagement / Design Intérieur
+peinture_inv_min = st.sidebar.number_input("Peinture & Travaux MIN (MAD)", value=10000)
+peinture_inv_max = st.sidebar.number_input("Peinture & Travaux MAX (MAD)", value=10000)
+deco_inv_min = st.sidebar.number_input("Décoration & Lumières MIN (MAD)", value=20000)
+deco_inv_max = st.sidebar.number_input("Décoration & Lumières MAX (MAD)", value=20000)
+etageres_inv_min = st.sidebar.number_input("Étagères MIN (MAD)", value=3500)
+etageres_inv_max = st.sidebar.number_input("Étagères MAX (MAD)", value=3500)
+comptoir_inv_min = st.sidebar.number_input("Comptoir MIN (MAD)", value=5000)
+comptoir_inv_max = st.sidebar.number_input("Comptoir MAX (MAD)", value=5000)
+tables_inv_min = st.sidebar.number_input("Tables + Chaises MIN (MAD)", value=2500)
+tables_inv_max = st.sidebar.number_input("Tables + Chaises MAX (MAD)", value=2500)
+panneaux_inv_min = st.sidebar.number_input("Panneaux extérieur MIN (MAD)", value=10000)
+panneaux_inv_max = st.sidebar.number_input("Panneaux extérieur MAX (MAD)", value=10000)
+tv_inv_min = st.sidebar.number_input("TV + Caisse MIN (MAD)", value=10000)
+tv_inv_max = st.sidebar.number_input("TV + Caisse MAX (MAD)", value=10000)
+cameras_inv_min = st.sidebar.number_input("Caméras MIN (MAD)", value=3000)
+cameras_inv_max = st.sidebar.number_input("Caméras MAX (MAD)", value=3000)
+
+# Divers investissement
+loyer2_inv_min = st.sidebar.number_input("Loyer 2 mois MIN (MAD)", value=18000)
+loyer2_inv_max = st.sidebar.number_input("Loyer 2 mois MAX (MAD)", value=18000)
+pubinv_min = st.sidebar.number_input("Publicités lancement MIN (MAD)", value=15000)
+pubinv_max = st.sidebar.number_input("Publicités lancement MAX (MAD)", value=15000)
+
+# Totaux investissement
+equip_min = sum([crepier_inv_min, gauffre_inv_min, plaque_inv_min, blender_inv_min, extracteur_inv_min,
+                  cafe_inv_min, vitrine_inv_min, frigo_inv_min, congel_inv_min,
+                  presse_inv_min, ustensiles_inv_min, produits_inv_min])
+equip_max = sum([crepier_inv_max, gauffre_inv_max, plaque_inv_max, blender_inv_max, extracteur_inv_max,
+                  cafe_inv_max, vitrine_inv_max, frigo_inv_max, congel_inv_max,
+                  presse_inv_max, ustensiles_inv_max, produits_inv_max])
+amen_min = sum([peinture_inv_min, deco_inv_min, etageres_inv_min, comptoir_inv_min,
+                 tables_inv_min, panneaux_inv_min, tv_inv_min, cameras_inv_min])
+amen_max = sum([peinture_inv_max, deco_inv_max, etageres_inv_max, comptoir_inv_max,
+                 tables_inv_max, panneaux_inv_max, tv_inv_max, cameras_inv_max])
+div_inv_min = loyer2_inv_min + pubinv_min
+div_inv_max = loyer2_inv_max + pubinv_max
+total_inv_min = equip_min + amen_min + div_inv_min
+total_inv_max = equip_max + amen_max + div_inv_max
 
 # === Commandes journalières min/max ===
 st.sidebar.header("⚙️ Commandes Journalières")
@@ -153,3 +225,24 @@ ax.set_ylabel("MAD")
 ax.set_title("Profit Net\nPire cas / Moyenne / Meilleur cas")
 ax.grid(axis="y", linestyle="--")
 st.pyplot(fig)
+
+st.subheader("💼 Charges d'Investissement")
+df_inv = pd.DataFrame([
+    {"Catégorie": "Équipements",                  "Min": equip_min,      "Max": equip_max,      "Moyenne": (equip_min+equip_max)/2},
+    {"Catégorie": "Aménagement / Design Intérieur","Min": amen_min,       "Max": amen_max,       "Moyenne": (amen_min+amen_max)/2},
+    {"Catégorie": "Divers",                       "Min": div_inv_min,    "Max": div_inv_max,    "Moyenne": (div_inv_min+div_inv_max)/2},
+    {"Catégorie": "TOTAL",                        "Min": total_inv_min,  "Max": total_inv_max,  "Moyenne": (total_inv_min+total_inv_max)/2},
+])
+st.dataframe(df_inv.style.format({"Min": "{:,.0f}", "Max": "{:,.0f}", "Moyenne": "{:,.0f}"}))
+
+# Graphique charges investissement
+fig2, ax2 = plt.subplots(figsize=(10,4))
+ax2.bar(
+    ["Inv Min","Inv Moy","Inv Max"],
+    [total_inv_min,(total_inv_min+total_inv_max)/2,total_inv_max],
+    color=['#ffa07a','#20b2aa','#ffa07a']
+)
+ax2.set_ylabel("MAD")
+ax2.set_title("Charges d'Investissement\nPire cas / Moyenne / Meilleur cas")
+ax2.grid(axis="y", linestyle="--")
+st.pyplot(fig2)
