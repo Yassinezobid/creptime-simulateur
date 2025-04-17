@@ -69,13 +69,13 @@ equipements = {
     "Plaque & Pancakes": st.sidebar.slider("Plaque & Pancakes (MAD)", 500, 800, 650),
     "Blender": st.sidebar.slider("Blender (MAD)", 1000, 2000, 1500),
     "Extracteur de jus": st.sidebar.slider("Extracteur de jus (MAD)", 1500, 3000, 2250),
-    "Machine à café": st.sidebar.slider("Machine à café (MAD)", 30000, 30000, 30000),
+    "Machine à café": st.sidebar.slider("Machine à café (MAD)", 29000, 31000, 30000),
     "Vitrine 2 glaces": st.sidebar.slider("Vitrine 2 glaces (MAD)", 15000, 20000, 17500),
-    "Réfrigérateur": st.sidebar.slider("Réfrigérateur (MAD)", 5000, 5000, 5000),
-    "Congélateur": st.sidebar.slider("Congélateur (MAD)", 3000, 3000, 3000),
+    "Réfrigérateur": st.sidebar.slider("Réfrigérateur (MAD)", 4800, 5200, 5000),
+    "Congélateur": st.sidebar.slider("Congélateur (MAD)", 2800, 3200, 3000),
     "Presse agrume": st.sidebar.slider("Presse agrume (MAD)", 1000, 2500, 1750),
-    "Ustensiles": st.sidebar.slider("Ustensiles (MAD)", 4000, 4000, 4000),
-    "Produits initiaux": st.sidebar.slider("Produits initiaux (MAD)", 20000, 20000, 20000)
+    "Ustensiles": st.sidebar.slider("Ustensiles (MAD)", 3800, 4200, 4000),
+    "Produits initiaux": st.sidebar.slider("Produits initiaux (MAD)", 18000, 22000, 20000)
 }
 
 st.sidebar.markdown("### 🧱 Aménagement / Design Intérieur")
