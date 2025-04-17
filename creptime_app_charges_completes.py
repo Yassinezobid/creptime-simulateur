@@ -60,15 +60,43 @@ associes = st.sidebar.number_input("Nombre d'associés", value=6)
 impot_taux = st.sidebar.slider("Taux impôt (%)", 0, 50, 20) / 100
 
 # === Charges fixes ===
-st.sidebar.header("🏗️ Charges Fixes")
-local = st.sidebar.number_input("Droit au local", value=14000)
-travaux = st.sidebar.number_input("Travaux / déco", value=25000)
-materiel = st.sidebar.number_input("Matériel cuisine", value=50000)
-mobilier = st.sidebar.number_input("Mobilier", value=20000)
-ambiance = st.sidebar.number_input("Ambiance / TV / déco", value=15000)
-stock = st.sidebar.number_input("Stock initial", value=10000)
-divers_fixes = st.sidebar.number_input("Divers (fixe)", value=10000)
-charges_fixes_totales = sum([local, travaux, materiel, mobilier, ambiance, stock, divers_fixes])
+st.sidebar.header("🏗️ Charges d'Investissement")
+
+st.sidebar.markdown("### 🛠️ Équipements")
+equipements = {
+    "Crépier": st.sidebar.slider("Crépier (MAD)", 6000, 8000, 7000),
+    "Gauffrier": st.sidebar.slider("Gauffrier (MAD)", 3000, 4500, 3750),
+    "Plaque & Pancakes": st.sidebar.slider("Plaque & Pancakes (MAD)", 500, 800, 650),
+    "Blender": st.sidebar.slider("Blender (MAD)", 1000, 2000, 1500),
+    "Extracteur de jus": st.sidebar.slider("Extracteur de jus (MAD)", 1500, 3000, 2250),
+    "Machine à café": st.sidebar.slider("Machine à café (MAD)", 30000, 30000, 30000),
+    "Vitrine 2 glaces": st.sidebar.slider("Vitrine 2 glaces (MAD)", 15000, 20000, 17500),
+    "Réfrigérateur": st.sidebar.slider("Réfrigérateur (MAD)", 5000, 5000, 5000),
+    "Congélateur": st.sidebar.slider("Congélateur (MAD)", 3000, 3000, 3000),
+    "Presse agrume": st.sidebar.slider("Presse agrume (MAD)", 1000, 2500, 1750),
+    "Ustensiles": st.sidebar.slider("Ustensiles (MAD)", 4000, 4000, 4000),
+    "Produits initiaux": st.sidebar.slider("Produits initiaux (MAD)", 20000, 20000, 20000)
+}
+
+st.sidebar.markdown("### 🧱 Aménagement / Design Intérieur")
+amenagement = {
+    "Peinture & Travaux": st.sidebar.slider("Peinture & Travaux (MAD)", 10000, 10000, 10000),
+    "Décoration & Lumières": st.sidebar.slider("Décoration & Lumières (MAD)", 20000, 20000, 20000),
+    "Étagères": st.sidebar.slider("Étagères (MAD)", 3500, 3500, 3500),
+    "Comptoir": st.sidebar.slider("Comptoir (MAD)", 5000, 5000, 5000),
+    "Tables + Chaises": st.sidebar.slider("Tables + Chaises (MAD)", 2500, 2500, 2500),
+    "Panneaux (extérieur)": st.sidebar.slider("Panneaux (extérieur) (MAD)", 10000, 10000, 10000),
+    "TV + Caisse": st.sidebar.slider("TV + Caisse (MAD)", 10000, 10000, 10000),
+    "Caméras": st.sidebar.slider("Caméras (MAD)", 3000, 3000, 3000)
+}
+
+st.sidebar.markdown("### 📦 Divers")
+divers = {
+    "Loyer 2 mois": st.sidebar.slider("Loyer 2 mois (MAD)", 18000, 18000, 18000),
+    "Publicités de lancement": st.sidebar.slider("Publicités de lancement (MAD)", 15000, 15000, 15000)
+}
+
+charges_fixes_totales = sum(equipements.values()) + sum(amenagement.values()) + sum(divers.values())
 part_fixe_associe = charges_fixes_totales / associes
 
 # === Charges mensuelles ===
@@ -132,12 +160,32 @@ ax.set_title("Profit Net mensuel & Part Associé")
 ax.grid(True)
 st.pyplot(fig)
 
-st.subheader("💼 Charges Fixes")
-df_fixes = pd.DataFrame({
-    "Poste": ["Local", "Travaux", "Cuisine", "Mobilier", "Ambiance", "Stock", "Divers"],
-    "Montant": [local, travaux, materiel, mobilier, ambiance, stock, divers_fixes]
-})
-df_fixes.loc["Total"] = ["TOTAL", charges_fixes_totales]
+st.subheader("💼 Charges d’Investissement")
+df_fixes = pd.DataFrame([
+    ["Crépier", equipements["Crépier"]],
+    ["Gauffrier", equipements["Gauffrier"]],
+    ["Plaque & Pancakes", equipements["Plaque & Pancakes"]],
+    ["Blender", equipements["Blender"]],
+    ["Extracteur de jus", equipements["Extracteur de jus"]],
+    ["Machine à café", equipements["Machine à café"]],
+    ["Vitrine 2 glaces", equipements["Vitrine 2 glaces"]],
+    ["Réfrigérateur", equipements["Réfrigérateur"]],
+    ["Congélateur", equipements["Congélateur"]],
+    ["Presse agrume", equipements["Presse agrume"]],
+    ["Ustensiles", equipements["Ustensiles"]],
+    ["Produits initiaux", equipements["Produits initiaux"]],
+    ["Peinture & Travaux", amenagement["Peinture & Travaux"]],
+    ["Décoration & Lumières", amenagement["Décoration & Lumières"]],
+    ["Étagères", amenagement["Étagères"]],
+    ["Comptoir", amenagement["Comptoir"]],
+    ["Tables + Chaises", amenagement["Tables + Chaises"]],
+    ["Panneaux (extérieur)", amenagement["Panneaux (extérieur)"]],
+    ["TV + Caisse", amenagement["TV + Caisse"]],
+    ["Caméras", amenagement["Caméras"]],
+    ["Loyer 2 mois", divers["Loyer 2 mois"]],
+    ["Publicités de lancement", divers["Publicités de lancement"]],
+    ["TOTAL", charges_fixes_totales]
+], columns=["Poste", "Montant"])
 st.dataframe(df_fixes)
 st.markdown(f"💰 **Part Fixe Associé : {part_fixe_associe:,.0f} MAD**")
 
