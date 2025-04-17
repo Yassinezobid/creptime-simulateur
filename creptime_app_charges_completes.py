@@ -1,11 +1,15 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
 
 st.set_page_config(page_title="Crêp'Time - Simulateur Mensuel", layout="wide")
 st.title("🥞 Simulateur de Profit Net Mensuel")
-# Logo de l’application
-st.image("logo.png", width=200)
+# Logo de l’application (chargement sécurisé)
+if os.path.exists("logo.png"):
+    st.image("logo.png", width=200)
+else:
+    st.warning("Logo introuvable : placez 'logo.png' dans le dossier de l’application.")
 
 # === Paramètres Produits ===
 st.sidebar.header("💾 Paramètres Produits")
