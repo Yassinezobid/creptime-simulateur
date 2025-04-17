@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt 
 
 st.set_page_config(page_title="Crêp'Time - Simulateur Complet", layout="wide")
 st.title("🥞 Simulateur de Rentabilité - Crêp'Time (Meknès)")
