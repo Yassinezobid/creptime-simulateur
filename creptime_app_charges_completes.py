@@ -161,31 +161,12 @@ ax.grid(True)
 st.pyplot(fig)
 
 st.subheader("💼 Charges d’Investissement")
-df_fixes = pd.DataFrame([
-    ["Crépier", equipements["Crépier"]],
-    ["Gauffrier", equipements["Gauffrier"]],
-    ["Plaque & Pancakes", equipements["Plaque & Pancakes"]],
-    ["Blender", equipements["Blender"]],
-    ["Extracteur de jus", equipements["Extracteur de jus"]],
-    ["Machine à café", equipements["Machine à café"]],
-    ["Vitrine 2 glaces", equipements["Vitrine 2 glaces"]],
-    ["Réfrigérateur", equipements["Réfrigérateur"]],
-    ["Congélateur", equipements["Congélateur"]],
-    ["Presse agrume", equipements["Presse agrume"]],
-    ["Ustensiles", equipements["Ustensiles"]],
-    ["Produits initiaux", equipements["Produits initiaux"]],
-    ["Peinture & Travaux", amenagement["Peinture & Travaux"]],
-    ["Décoration & Lumières", amenagement["Décoration & Lumières"]],
-    ["Étagères", amenagement["Étagères"]],
-    ["Comptoir", amenagement["Comptoir"]],
-    ["Tables + Chaises", amenagement["Tables + Chaises"]],
-    ["Panneaux (extérieur)", amenagement["Panneaux (extérieur)"]],
-    ["TV + Caisse", amenagement["TV + Caisse"]],
-    ["Caméras", amenagement["Caméras"]],
-    ["Loyer 2 mois", divers["Loyer 2 mois"]],
-    ["Publicités de lancement", divers["Publicités de lancement"]],
-    ["TOTAL", charges_fixes_totales]
-], columns=["Poste", "Montant"])
+df_fixes = pd.DataFrame(
+    [{"Catégorie": "Équipements", "Poste": k, "Montant": v} for k, v in equipements.items()]
+    + [{"Catégorie": "Aménagement / Design Intérieur", "Poste": k, "Montant": v} for k, v in amenagement.items()]
+    + [{"Catégorie": "Divers", "Poste": k, "Montant": v} for k, v in divers.items()]
+    + [{"Catégorie": "", "Poste": "TOTAL", "Montant": charges_fixes_totales}]
+)
 st.dataframe(df_fixes)
 st.markdown(f"💰 **Part Fixe Associé : {part_fixe_associe:,.0f} MAD**")
 
