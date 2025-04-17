@@ -61,7 +61,7 @@ impot_taux = st.sidebar.slider("Taux impôt (%)", 0, 50, 20) / 100
 
 # === Charges fixes ===
 st.sidebar.header("🏗️ Charges Fixes")
-local = st.sidebar.number_input("Droit au local", value=100000)
+local = st.sidebar.number_input("Droit au local", value=14000)
 travaux = st.sidebar.number_input("Travaux / déco", value=25000)
 materiel = st.sidebar.number_input("Matériel cuisine", value=50000)
 mobilier = st.sidebar.number_input("Mobilier", value=20000)
@@ -73,12 +73,12 @@ part_fixe_associe = charges_fixes_totales / associes
 
 # === Charges mensuelles ===
 st.sidebar.header("🗖️ Charges Mensuelles")
-loyer = st.sidebar.number_input("Loyer", value=4000)
-salaire_employes = st.sidebar.number_input("Salaires employés (2)", value=4000)
+loyer = st.sidebar.number_input("Loyer", value=7000)
+salaire_employes = st.sidebar.number_input("Salaires employés (2)", value=6000)
 salaire_menage = st.sidebar.number_input("Femme de ménage", value=1000)
-electricite = st.sidebar.number_input("Électricité", value=1500)
-internet = st.sidebar.number_input("Internet", value=500)
-publicite = st.sidebar.number_input("Publicité / Réseaux", value=500)
+electricite = st.sidebar.number_input("Électricité", value=4000)
+internet = st.sidebar.number_input("Internet", value=300)
+publicite = st.sidebar.number_input("Publicité / Réseaux", value=2000)
 divers_mensuels = st.sidebar.number_input("Divers mensuels", value=1000)
 charges_mensuelles = sum([
     loyer, salaire_employes, salaire_menage,
