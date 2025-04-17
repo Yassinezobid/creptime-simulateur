@@ -10,87 +10,49 @@ st.sidebar.header("💾 Paramètres Produits & Marges")
 
 # Crêpes Sucrées
 st.sidebar.markdown("### 🥞 Crêpes Sucrées ")
-prix_crepe_min = st.sidebar.number_input("Prix crêpe MIN (MAD)", value=25)
-prix_crepe_max = st.sidebar.number_input("Prix crêpe MAX (MAD)", value=35)
-cout_crepe_min = st.sidebar.number_input("Coût crêpe MIN (MP)", value=8)
-cout_crepe_max = st.sidebar.number_input("Coût crêpe MAX (MP)", value=12)
+prix_crepe = st.sidebar.number_input("Prix crêpe (MAD)", value=30)
+cout_crepe = st.sidebar.number_input("Coût crêpe (MP)", value=10)
 
 # Gaufres Sucrées
 st.sidebar.markdown("### 🧇 Gaufres Sucrées")
-prix_gaufre_min = st.sidebar.number_input("Prix gaufre MIN (MAD)", value=18)
-prix_gaufre_max = st.sidebar.number_input("Prix gaufre MAX (MAD)", value=38)
-cout_gaufre_min = st.sidebar.number_input("Coût gaufre MIN (MP)", value=7)
-cout_gaufre_max = st.sidebar.number_input("Coût gaufre MAX (MP)", value=11)
+prix_gaufre = st.sidebar.number_input("Prix gaufre (MAD)", value=28)
+cout_gaufre = st.sidebar.number_input("Coût gaufre (MP)", value=9)
 
 # Pancakes
 st.sidebar.markdown("### 🥞 Pancakes")
-prix_pancake_min = st.sidebar.number_input("Prix pancake MIN (MAD)", value=27)
-prix_pancake_max = st.sidebar.number_input("Prix pancake MAX (MAD)", value=37)
-cout_pancake_min = st.sidebar.number_input("Coût pancake MIN (MP)", value=9)
-cout_pancake_max = st.sidebar.number_input("Coût pancake MAX (MP)", value=13)
+prix_pancake = st.sidebar.number_input("Prix pancake (MAD)", value=32)
+cout_pancake = st.sidebar.number_input("Coût pancake (MP)", value=11)
 
 # Coupes Glacées
 st.sidebar.markdown("### 🍦 Coupes Glacées")
-prix_glace_min = st.sidebar.number_input("Prix coupe glacée MIN (MAD)", value=30)
-prix_glace_max = st.sidebar.number_input("Prix coupe glacée MAX (MAD)", value=40)
-cout_glace_min = st.sidebar.number_input("Coût coupe glacée MIN (MP)", value=10)
-cout_glace_max = st.sidebar.number_input("Coût coupe glacée MAX (MP)", value=14)
+prix_glace = st.sidebar.number_input("Prix coupe glacée (MAD)", value=35)
+cout_glace = st.sidebar.number_input("Coût coupe glacée (MP)", value=12)
 
 # Salades & Bowls
 st.sidebar.markdown("### 🍓 Salades & Bowls Fraîcheur")
-prix_bowl_min = st.sidebar.number_input("Prix bowl/salade MIN (MAD)", value=25)
-prix_bowl_max = st.sidebar.number_input("Prix bowl/salade MAX (MAD)", value=35)
-cout_bowl_min = st.sidebar.number_input("Coût bowl/salade MIN (MP)", value=8)
-cout_bowl_max = st.sidebar.number_input("Coût bowl/salade MAX (MP)", value=12)
+prix_bowl = st.sidebar.number_input("Prix bowl/salade (MAD)", value=30)
+cout_bowl = st.sidebar.number_input("Coût bowl/salade (MP)", value=10)
 
 # Smoothies & Jus
 st.sidebar.markdown("### 🥤 Smoothies & Jus Frais")
-prix_jus_min = st.sidebar.number_input("Prix jus/smoothie MIN (MAD)", value=15)
-prix_jus_max = st.sidebar.number_input("Prix jus/smoothie MAX (MAD)", value=25)
-cout_jus_min = st.sidebar.number_input("Coût jus/smoothie MIN (MP)", value=5)
-cout_jus_max = st.sidebar.number_input("Coût jus/smoothie MAX (MP)", value=9)
+prix_jus = st.sidebar.number_input("Prix jus/smoothie (MAD)", value=20)
+cout_jus = st.sidebar.number_input("Coût jus/smoothie (MP)", value=7)
 
 # Boissons Chaudes
 st.sidebar.markdown("### ☕ Boissons Chaudes")
-prix_boisson_chaude_min = st.sidebar.number_input("Prix boisson chaude MIN (MAD)", value=10)
-prix_boisson_chaude_max = st.sidebar.number_input("Prix boisson chaude MAX (MAD)", value=20)
-cout_boisson_chaude_min = st.sidebar.number_input("Coût boisson chaude MIN (MP)", value=3)
-cout_boisson_chaude_max = st.sidebar.number_input("Coût boisson chaude MAX (MP)", value=7)
+prix_boisson_chaude = st.sidebar.number_input("Prix boisson chaude (MAD)", value=15)
+cout_boisson_chaude = st.sidebar.number_input("Coût boisson chaude (MP)", value=5)
 
 # === Paramètres de gestion ===
 st.sidebar.header("⚙️ Commandes journalières")
-st.sidebar.markdown("### Plage Commandes par jour")
-# Crêpes
-crepe_min = st.sidebar.number_input("Commandes crêpe MIN", value=80)
-crepe_max = st.sidebar.number_input("Commandes crêpe MAX", value=120)
-# Gaufres
-gaufre_min = st.sidebar.number_input("Commandes gaufre MIN", value=60)
-gaufre_max = st.sidebar.number_input("Commandes gaufre MAX", value=100)
-# Pancakes
-pancake_min = st.sidebar.number_input("Commandes pancake MIN", value=50)
-pancake_max = st.sidebar.number_input("Commandes pancake MAX", value=70)
-# Coupes Glacées
-glace_min = st.sidebar.number_input("Commandes coupe glacée MIN", value=40)
-glace_max = st.sidebar.number_input("Commandes coupe glacée MAX", value=60)
-# Salades & Bowls
-bowl_min = st.sidebar.number_input("Commandes bowl/salade MIN", value=30)
-bowl_max = st.sidebar.number_input("Commandes bowl/salade MAX", value=50)
-# Smoothies & Jus
-jus_min = st.sidebar.number_input("Commandes jus/smoothie MIN", value=50)
-jus_max = st.sidebar.number_input("Commandes jus/smoothie MAX", value=90)
-# Boissons Chaudes
-boisson_min = st.sidebar.number_input("Commandes boisson chaude MIN", value=70)
-boisson_max = st.sidebar.number_input("Commandes boisson chaude MAX", value=110)
-
-commandes_min = {
-    "crepe": crepe_min, "gaufre": gaufre_min,
-    "pancake": pancake_min, "glace": glace_min,
-    "bowl": bowl_min, "jus": jus_min, "boisson": boisson_min
-}
-commandes_max = {
-    "crepe": crepe_max, "gaufre": gaufre_max,
-    "pancake": pancake_max, "glace": glace_max,
-    "bowl": bowl_max, "jus": jus_max, "boisson": boisson_max
+commandes = {
+    "crepe": st.sidebar.number_input("Commandes crêpe", value=100),
+    "gaufre": st.sidebar.number_input("Commandes gaufre", value=80),
+    "pancake": st.sidebar.number_input("Commandes pancake", value=60),
+    "glace": st.sidebar.number_input("Commandes coupe glacée", value=50),
+    "bowl": st.sidebar.number_input("Commandes bowl/salade", value=40),
+    "jus": st.sidebar.number_input("Commandes jus/smoothie", value=70),
+    "boisson": st.sidebar.number_input("Commandes boisson chaude", value=90),
 }
 
 jours_mois = st.sidebar.slider("Jours d'activité par mois", 20, 31, 30)
@@ -167,41 +129,41 @@ charges_mensuelles_max = sum([
 
 # === Simulation ===
 revenu_brut_min = (
-    commandes_min["crepe"] * prix_crepe_min +
-    commandes_min["gaufre"] * prix_gaufre_min +
-    commandes_min["pancake"] * prix_pancake_min +
-    commandes_min["glace"] * prix_glace_min +
-    commandes_min["bowl"] * prix_bowl_min +
-    commandes_min["jus"] * prix_jus_min +
-    commandes_min["boisson"] * prix_boisson_chaude_min
+    commandes["crepe"] * prix_crepe +
+    commandes["gaufre"] * prix_gaufre +
+    commandes["pancake"] * prix_pancake +
+    commandes["glace"] * prix_glace +
+    commandes["bowl"] * prix_bowl +
+    commandes["jus"] * prix_jus +
+    commandes["boisson"] * prix_boisson_chaude
 ) * jours_mois
 revenu_brut_max = (
-    commandes_max["crepe"] * prix_crepe_max +
-    commandes_max["gaufre"] * prix_gaufre_max +
-    commandes_max["pancake"] * prix_pancake_max +
-    commandes_max["glace"] * prix_glace_max +
-    commandes_max["bowl"] * prix_bowl_max +
-    commandes_max["jus"] * prix_jus_max +
-    commandes_max["boisson"] * prix_boisson_chaude_max
+    commandes["crepe"] * prix_crepe +
+    commandes["gaufre"] * prix_gaufre +
+    commandes["pancake"] * prix_pancake +
+    commandes["glace"] * prix_glace +
+    commandes["bowl"] * prix_bowl +
+    commandes["jus"] * prix_jus +
+    commandes["boisson"] * prix_boisson_chaude
 ) * jours_mois
 
 cout_total_min = (
-    commandes_min["crepe"] * cout_crepe_min +
-    commandes_min["gaufre"] * cout_gaufre_min +
-    commandes_min["pancake"] * cout_pancake_min +
-    commandes_min["glace"] * cout_glace_min +
-    commandes_min["bowl"] * cout_bowl_min +
-    commandes_min["jus"] * cout_jus_min +
-    commandes_min["boisson"] * cout_boisson_chaude_min
+    commandes["crepe"] * cout_crepe +
+    commandes["gaufre"] * cout_gaufre +
+    commandes["pancake"] * cout_pancake +
+    commandes["glace"] * cout_glace +
+    commandes["bowl"] * cout_bowl +
+    commandes["jus"] * cout_jus +
+    commandes["boisson"] * cout_boisson_chaude
 ) * jours_mois
 cout_total_max = (
-    commandes_max["crepe"] * cout_crepe_max +
-    commandes_max["gaufre"] * cout_gaufre_max +
-    commandes_max["pancake"] * cout_pancake_max +
-    commandes_max["glace"] * cout_glace_max +
-    commandes_max["bowl"] * cout_bowl_max +
-    commandes_max["jus"] * cout_jus_max +
-    commandes_max["boisson"] * cout_boisson_chaude_max
+    commandes["crepe"] * cout_crepe +
+    commandes["gaufre"] * cout_gaufre +
+    commandes["pancake"] * cout_pancake +
+    commandes["glace"] * cout_glace +
+    commandes["bowl"] * cout_bowl +
+    commandes["jus"] * cout_jus +
+    commandes["boisson"] * cout_boisson_chaude
 ) * jours_mois
 
 benefice_avant_impot_min = revenu_brut_min - cout_total_max - charges_mensuelles_max
@@ -216,17 +178,27 @@ profit_net_max = benefice_avant_impot_max - impot_max
 part_associe_min = profit_net_min / associes
 part_associe_max = profit_net_max / associes
 
+# === Compute averages ===
+charges_fixes_totales_moy = (charges_fixes_totales_min + charges_fixes_totales_max) / 2
+charges_mensuelles_moy = (charges_mensuelles_min + charges_mensuelles_max) / 2
+revenu_brut_moy = (revenu_brut_min + revenu_brut_max) / 2
+cout_total_moy = (cout_total_min + cout_total_max) / 2
+benefice_avant_impot_moy = (benefice_avant_impot_min + benefice_avant_impot_max) / 2
+impot_moy = (impot_min + impot_max) / 2
+profit_net_moy = (profit_net_min + profit_net_max) / 2
+part_associe_moy = (part_associe_min + part_associe_max) / 2
+
 # === Affichage résultats ===
 st.subheader("📊 Résultats de Simulation")
 df_range = pd.DataFrame([
-    {"Metric": "Revenu Brut",      "Min": revenu_brut_min,      "Max": revenu_brut_max},
-    {"Metric": "Coût MP",          "Min": cout_total_min,        "Max": cout_total_max},
-    {"Metric": "Bénéfice Avant Impôt", "Min": benefice_avant_impot_min, "Max": benefice_avant_impot_max},
-    {"Metric": "Impôt",            "Min": impot_min,             "Max": impot_max},
-    {"Metric": "Profit Net",       "Min": profit_net_min,        "Max": profit_net_max},
-    {"Metric": "Part par Associé", "Min": part_associe_min,      "Max": part_associe_max},
+    {"Metric": "Revenu Brut",      "Min": revenu_brut_min,      "Max": revenu_brut_max,      "Moyenne": revenu_brut_moy},
+    {"Metric": "Coût MP",          "Min": cout_total_min,        "Max": cout_total_max,        "Moyenne": cout_total_moy},
+    {"Metric": "Bénéfice Avant Impôt", "Min": benefice_avant_impot_min, "Max": benefice_avant_impot_max, "Moyenne": benefice_avant_impot_moy},
+    {"Metric": "Impôt",            "Min": impot_min,             "Max": impot_max,             "Moyenne": impot_moy},
+    {"Metric": "Profit Net",       "Min": profit_net_min,        "Max": profit_net_max,        "Moyenne": profit_net_moy},
+    {"Metric": "Part par Associé", "Min": part_associe_min,      "Max": part_associe_max,      "Moyenne": part_associe_moy},
 ])
-st.dataframe(df_range.style.format({"Min": "{:,.0f}", "Max": "{:,.0f}"}))
+st.dataframe(df_range.style.format({"Min": "{:,.0f}", "Max": "{:,.0f}", "Moyenne": "{:,.0f}"}))
 
 st.subheader("📈 Graphique : Profit Net & Part Associé")
 fig, ax = plt.subplots(figsize=(12, 5))
@@ -238,16 +210,16 @@ st.pyplot(fig)
 
 st.subheader("💼 Charges d’Investissement")
 df_inv = pd.DataFrame([
-    {"Catégorie": "Équipements",                  "Min": equipements_min,          "Max": equipements_max},
-    {"Catégorie": "Aménagement / Design Intérieur","Min": amenagement_min,         "Max": amenagement_max},
-    {"Catégorie": "Divers",                       "Min": divers_min,              "Max": divers_max},
-    {"Catégorie": "TOTAL",                        "Min": charges_fixes_totales_min,"Max": charges_fixes_totales_max},
+    {"Catégorie": "Équipements",                  "Min": equipements_min,          "Max": equipements_max,          "Moyenne": (equipements_min + equipements_max) / 2},
+    {"Catégorie": "Aménagement / Design Intérieur","Min": amenagement_min,         "Max": amenagement_max,         "Moyenne": (amenagement_min + amenagement_max) / 2},
+    {"Catégorie": "Divers",                       "Min": divers_min,              "Max": divers_max,              "Moyenne": (divers_min + divers_max) / 2},
+    {"Catégorie": "TOTAL",                        "Min": charges_fixes_totales_min,"Max": charges_fixes_totales_max, "Moyenne": charges_fixes_totales_moy},
 ])
-st.dataframe(df_inv.style.format({"Min": "{:,.0f}", "Max": "{:,.0f}"}))
+st.dataframe(df_inv.style.format({"Min": "{:,.0f}", "Max": "{:,.0f}", "Moyenne": "{:,.0f}"}))
 
 st.subheader("📊 Résultats de Simulation (Min & Max)")
 df_profit = pd.DataFrame([
-    {"Metric": "Profit Net",       "Min": profit_net_min,   "Max": profit_net_max},
-    {"Metric": "Part par Associé", "Min": part_associe_min, "Max": part_associe_max},
+    {"Metric": "Profit Net",       "Min": profit_net_min,   "Max": profit_net_max,   "Moyenne": profit_net_moy},
+    {"Metric": "Part par Associé", "Min": part_associe_min, "Max": part_associe_max, "Moyenne": part_associe_moy},
 ])
-st.dataframe(df_profit.style.format({"Min": "{:,.0f}", "Max": "{:,.0f}"}))
+st.dataframe(df_profit.style.format({"Min": "{:,.0f}", "Max": "{:,.0f}", "Moyenne": "{:,.0f}"}))
