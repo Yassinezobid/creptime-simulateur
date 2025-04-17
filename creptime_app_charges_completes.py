@@ -265,3 +265,32 @@ ax2.set_ylabel("MAD")
 ax2.set_title("Charges d'Investissement\nPire cas / Moyenne / Meilleur cas")
 ax2.grid(axis="y", linestyle="--")
 st.pyplot(fig2)
+
+# === Sensibilité globales selon commandes totales/jour ===
+st.markdown("---")
+st.subheader("🔍 Sensibilité selon commandes totales/jour")
+
+# Calcul du panier moyen
+avg_price = (prix_crepe + prix_gaufre + prix_pancake + prix_glace + prix_bowl + prix_jus + prix_boisson) / 7
+avg_cost  = (cout_crepe + cout_gaufre + cout_pancake + cout_glace + cout_bowl + cout_jus + cout_boisson) / 7
+
+# Charge mensuelle fixe (moyenne)
+monthly_charges = ch_moy  # déjà calculé
+
+rows = []
+for cmds in range(10, 101, 10):
+    revenu = cmds * avg_price * jours_mois
+    cost   = cmds * avg_cost  * jours_mois
+    ba     = revenu - cost - monthly_charges
+    imp    = max(0, ba * impot_taux)
+    pn     = ba - imp
+    rows.append({
+        "Cmds/jour": cmds,
+        "Revenu Brut": revenu,
+        "Coût Total": cost,
+        "Bénéf. Avant Impôt": ba,
+        "Impôt": imp,
+        "Profit Net": pn
+    })
+df_sens = pd.DataFrame(rows)
+st.dataframe(df_sens.style.format({"Cmds/jour": "{:d}", "Revenu Brut":"{:,.0f}", "Coût Total":"{:,.0f}", "Bénéf. Avant Impôt":"{:,.0f}", "Impôt":"{:,.0f}", "Profit Net":"{:,.0f}"}))
