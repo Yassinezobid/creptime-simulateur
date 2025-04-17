@@ -80,20 +80,20 @@ equipements = {
 
 st.sidebar.markdown("### 🧱 Aménagement / Design Intérieur")
 amenagement = {
-    "Peinture & Travaux": st.sidebar.slider("Peinture & Travaux (MAD)", 10000, 10000, 10000),
-    "Décoration & Lumières": st.sidebar.slider("Décoration & Lumières (MAD)", 20000, 20000, 20000),
-    "Étagères": st.sidebar.slider("Étagères (MAD)", 3500, 3500, 3500),
-    "Comptoir": st.sidebar.slider("Comptoir (MAD)", 5000, 5000, 5000),
-    "Tables + Chaises": st.sidebar.slider("Tables + Chaises (MAD)", 2500, 2500, 2500),
-    "Panneaux (extérieur)": st.sidebar.slider("Panneaux (extérieur) (MAD)", 10000, 10000, 10000),
-    "TV + Caisse": st.sidebar.slider("TV + Caisse (MAD)", 10000, 10000, 10000),
-    "Caméras": st.sidebar.slider("Caméras (MAD)", 3000, 3000, 3000)
+    "Peinture & Travaux": st.sidebar.slider("Peinture & Travaux (MAD)", 9000, 11000, 10000),
+    "Décoration & Lumières": st.sidebar.slider("Décoration & Lumières (MAD)", 19000, 21000, 20000),
+    "Étagères": st.sidebar.slider("Étagères (MAD)", 3300, 3700, 3500),
+    "Comptoir": st.sidebar.slider("Comptoir (MAD)", 4800, 5200, 5000),
+    "Tables + Chaises": st.sidebar.slider("Tables + Chaises (MAD)", 2300, 2700, 2500),
+    "Panneaux (extérieur)": st.sidebar.slider("Panneaux (extérieur) (MAD)", 9000, 11000, 10000),
+    "TV + Caisse": st.sidebar.slider("TV + Caisse (MAD)", 9500, 10500, 10000),
+    "Caméras": st.sidebar.slider("Caméras (MAD)", 2800, 3200, 3000)
 }
 
 st.sidebar.markdown("### 📦 Divers")
 divers = {
-    "Loyer 2 mois": st.sidebar.slider("Loyer 2 mois (MAD)", 18000, 18000, 18000),
-    "Publicités de lancement": st.sidebar.slider("Publicités de lancement (MAD)", 15000, 15000, 15000)
+    "Loyer 2 mois": st.sidebar.slider("Loyer 2 mois (MAD)", 17000, 19000, 18000),
+    "Publicités de lancement": st.sidebar.slider("Publicités de lancement (MAD)", 14000, 16000, 15000)
 }
 
 charges_fixes_totales = sum(equipements.values()) + sum(amenagement.values()) + sum(divers.values())
