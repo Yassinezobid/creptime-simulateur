@@ -73,71 +73,73 @@ jours_mois = st.sidebar.slider("Jours d'activité par mois", 20, 31, 30)
 associes = st.sidebar.number_input("Nombre d'associés", value=6)
 impot_taux = st.sidebar.slider("Taux impôt (%)", 0, 50, 20) / 100
 
-# === Charges fixes ===
-st.sidebar.header("🏗️ Charges d'Investissement")
-
-st.sidebar.markdown("### 🛠️ Équipements")
-equipements = {
-    "Crépier": st.sidebar.slider("Crépier (MAD)", 6000, 8000, 7000),
-    "Gauffrier": st.sidebar.slider("Gauffrier (MAD)", 3000, 4500, 3750),
-    "Plaque & Pancakes": st.sidebar.slider("Plaque & Pancakes (MAD)", 500, 800, 650),
-    "Blender": st.sidebar.slider("Blender (MAD)", 1000, 2000, 1500),
-    "Extracteur de jus": st.sidebar.slider("Extracteur de jus (MAD)", 1500, 3000, 2250),
-    "Machine à café": st.sidebar.slider("Machine à café (MAD)", 29000, 31000, 30000),
-    "Vitrine 2 glaces": st.sidebar.slider("Vitrine 2 glaces (MAD)", 15000, 20000, 17500),
-    "Réfrigérateur": st.sidebar.slider("Réfrigérateur (MAD)", 4800, 5200, 5000),
-    "Congélateur": st.sidebar.slider("Congélateur (MAD)", 2800, 3200, 3000),
-    "Presse agrume": st.sidebar.slider("Presse agrume (MAD)", 1000, 2500, 1750),
-    "Ustensiles": st.sidebar.slider("Ustensiles (MAD)", 3800, 4200, 4000),
-    "Produits initiaux": st.sidebar.slider("Produits initiaux (MAD)", 18000, 22000, 20000)
+# === Charges d'Investissement ===
+equipements_range = {
+    "Crépier": (6000, 8000),
+    "Gauffrier": (3000, 4500),
+    "Plaque & Pancakes": (500, 800),
+    "Blender": (1000, 2000),
+    "Extracteur de jus": (1500, 3000),
+    "Machine à café": (30000, 30000),
+    "Vitrine 2 glaces": (15000, 20000),
+    "Réfrigérateur": (5000, 5000),
+    "Congélateur": (3000, 3000),
+    "Presse agrume": (1000, 2500),
+    "Ustensiles": (4000, 4000),
+    "Produits initiaux": (20000, 20000)
 }
 
-st.sidebar.markdown("### 🧱 Aménagement / Design Intérieur")
-amenagement = {
-    "Peinture & Travaux": st.sidebar.slider("Peinture & Travaux (MAD)", 9000, 11000, 10000),
-    "Décoration & Lumières": st.sidebar.slider("Décoration & Lumières (MAD)", 19000, 21000, 20000),
-    "Étagères": st.sidebar.slider("Étagères (MAD)", 3300, 3700, 3500),
-    "Comptoir": st.sidebar.slider("Comptoir (MAD)", 4800, 5200, 5000),
-    "Tables + Chaises": st.sidebar.slider("Tables + Chaises (MAD)", 2300, 2700, 2500),
-    "Panneaux (extérieur)": st.sidebar.slider("Panneaux (extérieur) (MAD)", 9000, 11000, 10000),
-    "TV + Caisse": st.sidebar.slider("TV + Caisse (MAD)", 9500, 10500, 10000),
-    "Caméras": st.sidebar.slider("Caméras (MAD)", 2800, 3200, 3000)
+amenagement_range = {
+    "Peinture & Travaux": (10000, 10000),
+    "Décoration & Lumières": (20000, 20000),
+    "Étagères": (3500, 3500),
+    "Comptoir": (5000, 5000),
+    "Tables + Chaises": (2500, 2500),
+    "Panneaux (extérieur)": (10000, 10000),
+    "TV + Caisse": (10000, 10000),
+    "Caméras": (3000, 3000)
 }
 
-st.sidebar.markdown("### 📦 Divers")
-divers = {
-    "Loyer 2 mois": st.sidebar.slider("Loyer 2 mois (MAD)", 17000, 19000, 18000),
-    "Publicités de lancement": st.sidebar.slider("Publicités de lancement (MAD)", 14000, 16000, 15000)
+divers_range = {
+    "Loyer 2 mois": (18000, 18000),
+    "Publicités de lancement": (15000, 15000)
 }
 
-equipements_min = 6000+3000+500+1000+1500+29000+15000+4800+2800+1000+3800+18000
-equipements_max = 8000+4500+800+2000+3000+31000+20000+5200+3200+2500+4200+22000
-
-amenagement_min = 9000+19000+3300+4800+2300+9000+9500+2800
-amenagement_max = 11000+21000+3700+5200+2700+11000+10500+3200
-
-divers_min = 17000+14000
-divers_max = 19000+16000
+equipements_min = sum(v[0] for v in equipements_range.values())
+equipements_max = sum(v[1] for v in equipements_range.values())
+amenagement_min = sum(v[0] for v in amenagement_range.values())
+amenagement_max = sum(v[1] for v in amenagement_range.values())
+divers_min = sum(v[0] for v in divers_range.values())
+divers_max = sum(v[1] for v in divers_range.values())
 
 charges_fixes_totales_min = equipements_min + amenagement_min + divers_min
 charges_fixes_totales_max = equipements_max + amenagement_max + divers_max
 
-part_fixe_associe = charges_fixes_totales_min / associes
-
 # === Charges mensuelles ===
 st.sidebar.header("🗖️ Charges Mensuelles")
-loyer = st.sidebar.number_input("Loyer", value=7000)
-salaire_employes = st.sidebar.number_input("Salaires employés (2)", value=6000)
-salaire_menage = st.sidebar.number_input("Femme de ménage", value=1000)
-electricite = st.sidebar.number_input("Électricité", value=4000)
-internet = st.sidebar.number_input("Internet", value=300)
-publicite = st.sidebar.number_input("Publicité / Réseaux", value=2000)
-divers_mensuels = st.sidebar.number_input("Divers mensuels", value=1000)
-charges_mensuelles = sum([
-    loyer, salaire_employes, salaire_menage,
-    electricite, internet, publicite, divers_mensuels
+loyer_min = st.sidebar.number_input("Loyer MIN (MAD)", value=6300)
+loyer_max = st.sidebar.number_input("Loyer MAX (MAD)", value=7700)
+salaire_employes_min = st.sidebar.number_input("Salaires employés (2) MIN (MAD)", value=5400)
+salaire_employes_max = st.sidebar.number_input("Salaires employés (2) MAX (MAD)", value=6600)
+salaire_menage_min = st.sidebar.number_input("Femme de ménage MIN (MAD)", value=900)
+salaire_menage_max = st.sidebar.number_input("Femme de ménage MAX (MAD)", value=1100)
+electricite_min = st.sidebar.number_input("Électricité MIN (MAD)", value=3600)
+electricite_max = st.sidebar.number_input("Électricité MAX (MAD)", value=4400)
+internet_min = st.sidebar.number_input("Internet MIN (MAD)", value=270)
+internet_max = st.sidebar.number_input("Internet MAX (MAD)", value=330)
+publicite_min = st.sidebar.number_input("Publicité / Réseaux MIN (MAD)", value=1800)
+publicite_max = st.sidebar.number_input("Publicité / Réseaux MAX (MAD)", value=2200)
+divers_mensuels_min = st.sidebar.number_input("Divers mensuels MIN (MAD)", value=900)
+divers_mensuels_max = st.sidebar.number_input("Divers mensuels MAX (MAD)", value=1100)
+
+charges_mensuelles_min = sum([
+    loyer_min, salaire_employes_min, salaire_menage_min,
+    electricite_min, internet_min, publicite_min, divers_mensuels_min
 ])
-part_mensuelle_associe = charges_mensuelles / associes
+charges_mensuelles_max = sum([
+    loyer_max, salaire_employes_max, salaire_menage_max,
+    electricite_max, internet_max, publicite_max, divers_mensuels_max
+])
 
 # === Simulation ===
 revenu_brut_min = (
@@ -178,8 +180,8 @@ cout_total_max = (
     commandes["boisson"] * cout_boisson_chaude_max
 ) * jours_mois
 
-benefice_avant_impot_min = revenu_brut_min - cout_total_max - charges_mensuelles
-benefice_avant_impot_max = revenu_brut_max - cout_total_min - charges_mensuelles
+benefice_avant_impot_min = revenu_brut_min - cout_total_max - charges_mensuelles_max
+benefice_avant_impot_max = revenu_brut_max - cout_total_min - charges_mensuelles_min
 
 impot_min = max(0, benefice_avant_impot_min * impot_taux)
 impot_max = max(0, benefice_avant_impot_max * impot_taux)
@@ -211,19 +213,17 @@ ax.grid(True)
 st.pyplot(fig)
 
 st.subheader("💼 Charges d’Investissement")
-df_ranges = pd.DataFrame([
+df_inv = pd.DataFrame([
     {"Catégorie": "Équipements",                  "Min": equipements_min,          "Max": equipements_max},
     {"Catégorie": "Aménagement / Design Intérieur","Min": amenagement_min,         "Max": amenagement_max},
     {"Catégorie": "Divers",                       "Min": divers_min,              "Max": divers_max},
     {"Catégorie": "TOTAL",                        "Min": charges_fixes_totales_min,"Max": charges_fixes_totales_max},
 ])
-st.dataframe(df_ranges.style.format({"Min": "{:,.0f}", "Max": "{:,.0f}"}))
+st.dataframe(df_inv.style.format({"Min": "{:,.0f}", "Max": "{:,.0f}"}))
 
-st.subheader("📅 Charges Mensuelles")
-df_mensuelles = pd.DataFrame({
-    "Poste": ["Loyer", "Salaires", "Ménage", "Électricité", "Internet", "Publicité", "Divers"],
-    "Montant": [loyer, salaire_employes, salaire_menage, electricite, internet, publicite, divers_mensuels]
-})
-df_mensuelles.loc["Total"] = ["TOTAL", charges_mensuelles]
-st.dataframe(df_mensuelles)
-st.markdown(f"💸 **Part Mensuelle Associé : {part_mensuelle_associe:,.0f} MAD**")
+st.subheader("📊 Résultats de Simulation (Min & Max)")
+df_profit = pd.DataFrame([
+    {"Metric": "Profit Net",       "Min": profit_net_min,   "Max": profit_net_max},
+    {"Metric": "Part par Associé", "Min": part_associe_min, "Max": part_associe_max},
+])
+st.dataframe(df_profit.style.format({"Min": "{:,.0f}", "Max": "{:,.0f}"}))
