@@ -152,6 +152,14 @@ div_inv_min = loyer2_inv_min + pubinv_min
 div_inv_max = loyer2_inv_max + pubinv_max
 total_inv_min = equip_min + amen_min + div_inv_min
 total_inv_max = equip_max + amen_max + div_inv_max
+# Default default values for charges mensuelles calculation
+loyer = 7000
+sal_emp = 6000
+sal_men = 1000
+elec = 4000
+internet = 300
+pub = 2000
+divers = 1000
 # === Total Charges Mensuelles ===
 charges_mensuelles = loyer + sal_emp + sal_men + elec + internet + pub + divers
 
