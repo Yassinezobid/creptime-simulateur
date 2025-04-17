@@ -187,41 +187,41 @@ charges_mensuelles_max = sum([
 
 # === Simulation ===
 revenu_brut_min = (
-    commandes["crepe"] * prix_crepe +
-    commandes["gaufre"] * prix_gaufre +
-    commandes["pancake"] * prix_pancake +
-    commandes["glace"] * prix_glace +
-    commandes["bowl"] * prix_bowl +
-    commandes["jus"] * prix_jus +
-    commandes["boisson"] * prix_boisson_chaude
+    commandes_min["crepe"] * prix_crepe +
+    commandes_min["gaufre"] * prix_gaufre +
+    commandes_min["pancake"] * prix_pancake +
+    commandes_min["glace"] * prix_glace +
+    commandes_min["bowl"] * prix_bowl +
+    commandes_min["jus"] * prix_jus +
+    commandes_min["boisson"] * prix_boisson_chaude
 ) * jours_mois
 revenu_brut_max = (
-    commandes["crepe"] * prix_crepe +
-    commandes["gaufre"] * prix_gaufre +
-    commandes["pancake"] * prix_pancake +
-    commandes["glace"] * prix_glace +
-    commandes["bowl"] * prix_bowl +
-    commandes["jus"] * prix_jus +
-    commandes["boisson"] * prix_boisson_chaude
+    commandes_max["crepe"] * prix_crepe +
+    commandes_max["gaufre"] * prix_gaufre +
+    commandes_max["pancake"] * prix_pancake +
+    commandes_max["glace"] * prix_glace +
+    commandes_max["bowl"] * prix_bowl +
+    commandes_max["jus"] * prix_jus +
+    commandes_max["boisson"] * prix_boisson_chaude
 ) * jours_mois
 
 cout_total_min = (
-    commandes["crepe"] * cout_crepe +
-    commandes["gaufre"] * cout_gaufre +
-    commandes["pancake"] * cout_pancake +
-    commandes["glace"] * cout_glace +
-    commandes["bowl"] * cout_bowl +
-    commandes["jus"] * cout_jus +
-    commandes["boisson"] * cout_boisson_chaude
+    commandes_min["crepe"] * cout_crepe +
+    commandes_min["gaufre"] * cout_gaufre +
+    commandes_min["pancake"] * cout_pancake +
+    commandes_min["glace"] * cout_glace +
+    commandes_min["bowl"] * cout_bowl +
+    commandes_min["jus"] * cout_jus +
+    commandes_min["boisson"] * cout_boisson_chaude
 ) * jours_mois
 cout_total_max = (
-    commandes["crepe"] * cout_crepe +
-    commandes["gaufre"] * cout_gaufre +
-    commandes["pancake"] * cout_pancake +
-    commandes["glace"] * cout_glace +
-    commandes["bowl"] * cout_bowl +
-    commandes["jus"] * cout_jus +
-    commandes["boisson"] * cout_boisson_chaude
+    commandes_max["crepe"] * cout_crepe +
+    commandes_max["gaufre"] * cout_gaufre +
+    commandes_max["pancake"] * cout_pancake +
+    commandes_max["glace"] * cout_glace +
+    commandes_max["bowl"] * cout_bowl +
+    commandes_max["jus"] * cout_jus +
+    commandes_max["boisson"] * cout_boisson_chaude
 ) * jours_mois
 
 benefice_avant_impot_min = revenu_brut_min - cout_total_max - charges_mensuelles_max
