@@ -9,7 +9,7 @@ st.title("🥞 Simulateur de Rentabilité - Crêp'Time (Meknès)")
 st.sidebar.header("💾 Paramètres Produits & Marges")
 
 # Crêpes Sucrées
-st.sidebar.markdown("### 🥞 Crêpes Sucrées")
+st.sidebar.markdown("### 🥞 Crêpes Sucrées ")
 prix_crepe = st.sidebar.number_input("Prix crêpe (MAD)", value=30)
 cout_crepe = st.sidebar.number_input("Coût crêpe (MP)", value=10)
 
