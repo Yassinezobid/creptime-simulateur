@@ -12,22 +12,49 @@ else:
     st.warning("Logo introuvable : placez 'logo.png' dans le dossier de l’application.")
 
 # === Paramètres Produits ===
-st.sidebar.header("💾 Paramètres Produits")
+st.sidebar.markdown("<h2 style='color:#ff6347'>💾 Paramètres Produits</h2>", unsafe_allow_html=True)
+
+# -- Crêpes Sucrées --
+st.sidebar.markdown("<h3 style='color:#d2691e'>🥞 Crêpes Sucrées</h3>", unsafe_allow_html=True)
 prix_crepe = st.sidebar.number_input("Prix crêpe (MAD)", value=30)
 cout_crepe = st.sidebar.number_input("Coût crêpe (MAD)", value=10)
+st.sidebar.write("")
+
+# -- Gaufres Sucrées --
+st.sidebar.markdown("<h3 style='color:#dda0dd'>🧇 Gaufres Sucrées</h3>", unsafe_allow_html=True)
 prix_gaufre = st.sidebar.number_input("Prix gaufre (MAD)", value=28)
 cout_gaufre = st.sidebar.number_input("Coût gaufre (MAD)", value=9)
+st.sidebar.write("")
+
+# -- Pancakes --
+st.sidebar.markdown("<h3 style='color:#ffb6c1'>🥞 Pancakes</h3>", unsafe_allow_html=True)
 prix_pancake = st.sidebar.number_input("Prix pancake (MAD)", value=32)
 cout_pancake = st.sidebar.number_input("Coût pancake (MAD)", value=11)
+st.sidebar.write("")
+
+# -- Coupes Glacées --
+st.sidebar.markdown("<h3 style='color:#87cefa'>🍦 Coupes Glacées</h3>", unsafe_allow_html=True)
 prix_glace = st.sidebar.number_input("Prix coupe glacée (MAD)", value=35)
 cout_glace = st.sidebar.number_input("Coût coupe glacée (MAD)", value=12)
+st.sidebar.write("")
+
+# -- Salades & Bowls --
+st.sidebar.markdown("<h3 style='color:#98fb98'>🍓 Salades & Bowls Fraîcheur</h3>", unsafe_allow_html=True)
 prix_bowl = st.sidebar.number_input("Prix bowl/salade (MAD)", value=30)
 cout_bowl = st.sidebar.number_input("Coût bowl/salade (MAD)", value=10)
+st.sidebar.write("")
+
+# -- Smoothies & Jus --
+st.sidebar.markdown("<h3 style='color:#ffa07a'>🥤 Smoothies & Jus Frais</h3>", unsafe_allow_html=True)
 prix_jus = st.sidebar.number_input("Prix jus/smoothie (MAD)", value=20)
 cout_jus = st.sidebar.number_input("Coût jus/smoothie (MAD)", value=7)
+st.sidebar.write("")
+
+# -- Boissons Chaudes --
+st.sidebar.markdown("<h3 style='color:#d2b48c'>☕ Boissons Chaudes</h3>", unsafe_allow_html=True)
 prix_boisson = st.sidebar.number_input("Prix boisson chaude (MAD)", value=15)
 cout_boisson = st.sidebar.number_input("Coût boisson chaude (MAD)", value=5)
-
+st.sidebar.write("")
 
 # === Commandes journalières min/max ===
 st.sidebar.header("⚙️ Commandes Journalières")
