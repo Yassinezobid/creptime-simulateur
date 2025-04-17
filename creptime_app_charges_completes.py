@@ -28,7 +28,48 @@ cout_jus = st.sidebar.number_input("Coût jus/smoothie (MAD)", value=7)
 prix_boisson = st.sidebar.number_input("Prix boisson chaude (MAD)", value=15)
 cout_boisson = st.sidebar.number_input("Coût boisson chaude (MAD)", value=5)
 
-# === Charges d'Investissement ===
+
+# === Commandes journalières min/max ===
+st.sidebar.header("⚙️ Commandes Journalières")
+st.sidebar.markdown("Définissez la fourchette de commandes par jour")
+crepe_min = st.sidebar.number_input("Crêpes MIN / jour", value=80)
+crepe_max = st.sidebar.number_input("Crêpes MAX / jour", value=120)
+gaufre_min = st.sidebar.number_input("Gaufres MIN / jour", value=60)
+gaufre_max = st.sidebar.number_input("Gaufres MAX / jour", value=100)
+pancake_min = st.sidebar.number_input("Pancakes MIN / jour", value=50)
+pancake_max = st.sidebar.number_input("Pancakes MAX / jour", value=70)
+glace_min = st.sidebar.number_input("Coupes glacées MIN / jour", value=40)
+glace_max = st.sidebar.number_input("Coupes glacées MAX / jour", value=60)
+bowl_min = st.sidebar.number_input("Bowls MIN / jour", value=30)
+bowl_max = st.sidebar.number_input("Bowls MAX / jour", value=50)
+jus_min = st.sidebar.number_input("Jus MIN / jour", value=50)
+jus_max = st.sidebar.number_input("Jus MAX / jour", value=90)
+boisson_min = st.sidebar.number_input("Boissons chaudes MIN / jour", value=70)
+boisson_max = st.sidebar.number_input("Boissons chaudes MAX / jour", value=110)
+
+# === Charges mensuelles min/max ===
+st.sidebar.header("💸 Charges Mensuelles")
+st.sidebar.markdown("Définissez la fourchette de chaque charge")
+loyer_min = st.sidebar.number_input("Loyer MIN (MAD)", value=6300)
+loyer_max = st.sidebar.number_input("Loyer MAX (MAD)", value=7700)
+sal_employes_min = st.sidebar.number_input("Salaires employés MIN", value=5400)
+sal_employes_max = st.sidebar.number_input("Salaires employés MAX", value=6600)
+sal_menage_min = st.sidebar.number_input("Ménage MIN", value=900)
+sal_menage_max = st.sidebar.number_input("Ménage MAX", value=1100)
+elec_min = st.sidebar.number_input("Électricité MIN", value=3600)
+elec_max = st.sidebar.number_input("Électricité MAX", value=4400)
+int_min = st.sidebar.number_input("Internet MIN", value=270)
+int_max = st.sidebar.number_input("Internet MAX", value=330)
+pub_min = st.sidebar.number_input("Pub MIN", value=1800)
+pub_max = st.sidebar.number_input("Pub MAX", value=2200)
+div_min = st.sidebar.number_input("Divers MIN", value=900)
+div_max = st.sidebar.number_input("Divers MAX", value=1100)
+
+# === Autres paramètres ===
+jours_mois = st.sidebar.slider("Jours d’activité/mois", 20, 31, 30)
+associes = st.sidebar.number_input("Nombre d’associés", value=6)
+impot_taux = st.sidebar.slider("Taux d’impôt (%)", 0, 50, 20) / 100
+
 st.sidebar.header("🏗️ Charges d'Investissement")
 st.sidebar.markdown("Saisissez la fourchette pour chaque poste d'investissement")
 
@@ -98,46 +139,6 @@ div_inv_max = loyer2_inv_max + pubinv_max
 total_inv_min = equip_min + amen_min + div_inv_min
 total_inv_max = equip_max + amen_max + div_inv_max
 
-# === Commandes journalières min/max ===
-st.sidebar.header("⚙️ Commandes Journalières")
-st.sidebar.markdown("Définissez la fourchette de commandes par jour")
-crepe_min = st.sidebar.number_input("Crêpes MIN / jour", value=80)
-crepe_max = st.sidebar.number_input("Crêpes MAX / jour", value=120)
-gaufre_min = st.sidebar.number_input("Gaufres MIN / jour", value=60)
-gaufre_max = st.sidebar.number_input("Gaufres MAX / jour", value=100)
-pancake_min = st.sidebar.number_input("Pancakes MIN / jour", value=50)
-pancake_max = st.sidebar.number_input("Pancakes MAX / jour", value=70)
-glace_min = st.sidebar.number_input("Coupes glacées MIN / jour", value=40)
-glace_max = st.sidebar.number_input("Coupes glacées MAX / jour", value=60)
-bowl_min = st.sidebar.number_input("Bowls MIN / jour", value=30)
-bowl_max = st.sidebar.number_input("Bowls MAX / jour", value=50)
-jus_min = st.sidebar.number_input("Jus MIN / jour", value=50)
-jus_max = st.sidebar.number_input("Jus MAX / jour", value=90)
-boisson_min = st.sidebar.number_input("Boissons chaudes MIN / jour", value=70)
-boisson_max = st.sidebar.number_input("Boissons chaudes MAX / jour", value=110)
-
-# === Charges mensuelles min/max ===
-st.sidebar.header("💸 Charges Mensuelles")
-st.sidebar.markdown("Définissez la fourchette de chaque charge")
-loyer_min = st.sidebar.number_input("Loyer MIN (MAD)", value=6300)
-loyer_max = st.sidebar.number_input("Loyer MAX (MAD)", value=7700)
-sal_employes_min = st.sidebar.number_input("Salaires employés MIN", value=5400)
-sal_employes_max = st.sidebar.number_input("Salaires employés MAX", value=6600)
-sal_menage_min = st.sidebar.number_input("Ménage MIN", value=900)
-sal_menage_max = st.sidebar.number_input("Ménage MAX", value=1100)
-elec_min = st.sidebar.number_input("Électricité MIN", value=3600)
-elec_max = st.sidebar.number_input("Électricité MAX", value=4400)
-int_min = st.sidebar.number_input("Internet MIN", value=270)
-int_max = st.sidebar.number_input("Internet MAX", value=330)
-pub_min = st.sidebar.number_input("Pub MIN", value=1800)
-pub_max = st.sidebar.number_input("Pub MAX", value=2200)
-div_min = st.sidebar.number_input("Divers MIN", value=900)
-div_max = st.sidebar.number_input("Divers MAX", value=1100)
-
-# === Autres paramètres ===
-jours_mois = st.sidebar.slider("Jours d’activité/mois", 20, 31, 30)
-associes = st.sidebar.number_input("Nombre d’associés", value=6)
-impot_taux = st.sidebar.slider("Taux d’impôt (%)", 0, 50, 20) / 100
 
 # === Construction des dicts ===
 commandes_min = {
