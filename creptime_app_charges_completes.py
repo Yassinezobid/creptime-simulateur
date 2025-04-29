@@ -1,306 +1,125 @@
 import streamlit as st
-import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
-import os
+import pandas as pd
 
-st.set_page_config(page_title="Crêp'Time - Simulateur Mensuel", layout="wide")
-st.title("🥞 Simulateur de Profit Net Mensuel")
-# Logo de l’application (chargement sécurisé)
-if os.path.exists("logo.png"):
-    st.image("logo.png", width=200)
-else:
-    st.warning("Logo introuvable : placez 'logo.png' dans le dossier de l’application.")
+st.set_page_config(page_title="Q-Learning Visualisation", layout="wide")
 
-# === Paramètres Produits ===
-st.sidebar.markdown("<h2 style='color:#ff6347'>💾 Paramètres Produits</h2>", unsafe_allow_html=True)
+st.title("Q-Learning - Grille et Convergence")
 
-# -- Crêpes Sucrées --
-st.sidebar.markdown("<h3 style='color:#d2691e'>🥞 Crêpes Sucrées</h3>", unsafe_allow_html=True)
-prix_crepe = st.sidebar.number_input("Prix crêpe (MAD)", value=30)
-cout_crepe = st.sidebar.number_input("Coût crêpe (MAD)", value=10)
-st.sidebar.write("")
+# --- 1. Environnement ---
+st.header("1. Environnement")
+cols = st.columns(2)
+n_rows = cols[0].number_input("Nombre de lignes", min_value=2, max_value=10, value=3)
+n_cols = cols[1].number_input("Nombre de colonnes", min_value=2, max_value=10, value=3)
 
-# -- Gaufres Sucrées --
-st.sidebar.markdown("<h3 style='color:#dda0dd'>🧇 Gaufres Sucrées</h3>", unsafe_allow_html=True)
-prix_gaufre = st.sidebar.number_input("Prix gaufre (MAD)", value=28)
-cout_gaufre = st.sidebar.number_input("Coût gaufre (MAD)", value=9)
-st.sidebar.write("")
+cols2 = st.columns(2)
+etat_initial = (cols2[0].number_input("Ligne de l'état initial (1-indexé)", 1, n_rows, 1) - 1,
+                cols2[1].number_input("Colonne de l'état initial (1-indexé)", 1, n_cols, 1) - 1)
 
-# -- Pancakes --
-st.sidebar.markdown("<h3 style='color:#ffb6c1'>🥞 Pancakes</h3>", unsafe_allow_html=True)
-prix_pancake = st.sidebar.number_input("Prix pancake (MAD)", value=32)
-cout_pancake = st.sidebar.number_input("Coût pancake (MAD)", value=11)
-st.sidebar.write("")
+cols3 = st.columns(2)
+etat_final = (cols3[0].number_input("Ligne de l'état final (1-indexé)", 1, n_rows, n_rows) - 1,
+              cols3[1].number_input("Colonne de l'état final (1-indexé)", 1, n_cols, n_cols) - 1)
 
-# -- Coupes Glacées --
-st.sidebar.markdown("<h3 style='color:#87cefa'>🍦 Coupes Glacées</h3>", unsafe_allow_html=True)
-prix_glace = st.sidebar.number_input("Prix coupe glacée (MAD)", value=35)
-cout_glace = st.sidebar.number_input("Coût coupe glacée (MAD)", value=12)
-st.sidebar.write("")
+recompense_normale = st.number_input("Récompense par défaut (cases normales)", value=-0.01)
+recompense_finale = st.number_input("Récompense de l'état final", value=1.0)
 
-# -- Salades & Bowls --
-st.sidebar.markdown("<h3 style='color:#98fb98'>🍓 Salades & Bowls Fraîcheur</h3>", unsafe_allow_html=True)
-prix_bowl = st.sidebar.number_input("Prix bowl/salade (MAD)", value=30)
-cout_bowl = st.sidebar.number_input("Coût bowl/salade (MAD)", value=10)
-st.sidebar.write("")
+# --- 2. Paramètres Q-learning ---
+st.header("2. Paramètres Q-Learning")
+alpha = st.slider("Alpha (taux d'apprentissage)", 0.0, 1.0, 0.5, 0.01)
+gamma = st.slider("Gamma (facteur de réduction)", 0.0, 1.0, 0.9, 0.01)
+epsilon = st.slider("Epsilon (exploration)", 0.0, 1.0, 0.1, 0.01)
 
-# -- Smoothies & Jus --
-st.sidebar.markdown("<h3 style='color:#ffa07a'>🥤 Smoothies & Jus Frais</h3>", unsafe_allow_html=True)
-prix_jus = st.sidebar.number_input("Prix jus/smoothie (MAD)", value=20)
-cout_jus = st.sidebar.number_input("Coût jus/smoothie (MAD)", value=7)
-st.sidebar.write("")
+# --- 3. Critères de convergence ---
+st.header("3. Critère de Convergence")
+n_episodes = st.number_input("Nombre max d'épisodes", 1, 10000, 1000)
+max_steps = st.number_input("Nombre max d'étapes par épisode", 1, 100, 15)
+seuil_convergence = st.number_input("Seuil de convergence", 0.0001, 1.0, 0.01, step=0.001, format="%.4f")
+episodes_sans_changement = st.number_input("Épisodes consécutifs sans changement", 1, 20, 2)
 
-# -- Boissons Chaudes --
-st.sidebar.markdown("<h3 style='color:#d2b48c'>☕ Boissons Chaudes</h3>", unsafe_allow_html=True)
-prix_boisson = st.sidebar.number_input("Prix boisson chaude (MAD)", value=15)
-cout_boisson = st.sidebar.number_input("Coût boisson chaude (MAD)", value=5)
-st.sidebar.write("")
+# --- Apprentissage Q-Learning ---
+def q_learning():
+    Q = np.zeros((n_rows, n_cols, 4))
+    actions = ['↑', '↓', '←', '→']
 
-# === Commandes journalières min/max ===
-st.sidebar.markdown("<h2 style='color:#20B2AA'>📈 Commandes / jour</h2>", unsafe_allow_html=True)
-crepe_min,   crepe_max   = st.sidebar.number_input("Crêpes MIN",  value=80),  st.sidebar.number_input("Crêpes MAX",  value=120)
-gaufre_min,  gaufre_max  = st.sidebar.number_input("Gaufres MIN", value=60),  st.sidebar.number_input("Gaufres MAX", value=100)
-pancake_min, pancake_max = st.sidebar.number_input("Pancakes MIN",value=50), st.sidebar.number_input("Pancakes MAX",value=70)
-glace_min,   glace_max   = st.sidebar.number_input("Glacées MIN", value=40),  st.sidebar.number_input("Glacées MAX", value=60)
-bowl_min,    bowl_max    = st.sidebar.number_input("Bowls MIN",  value=30),  st.sidebar.number_input("Bowls MAX",  value=50)
-jus_min,     jus_max     = st.sidebar.number_input("Jus MIN",    value=50),  st.sidebar.number_input("Jus MAX",    value=90)
-boisson_min, boisson_max = st.sidebar.number_input("Boissons MIN",value=70),  st.sidebar.number_input("Boissons MAX",value=110)
+    def choisir_action(s):
+        if np.random.uniform(0, 1) < epsilon:
+            return np.random.randint(4)
+        else:
+            return np.argmax(Q[s[0], s[1]])
 
-st.sidebar.markdown("---")
+    def faire_etape(s, a):
+        i, j = s
+        if a == 0 and i > 0: i -= 1
+        if a == 1 and i < n_rows - 1: i += 1
+        if a == 2 and j > 0: j -= 1
+        if a == 3 and j < n_cols - 1: j += 1
+        s2 = (i, j)
+        r = recompense_finale if s2 == etat_final else recompense_normale
+        done = s2 == etat_final
+        return s2, r, done
 
-# === Charges mensuelles min/max ===
-st.sidebar.markdown("<h2 style='color:#FFA500'>🏦 Charges Mensuelles</h2>", unsafe_allow_html=True)
-loyer_min,      loyer_max      = st.sidebar.number_input("Loyer MIN", value=6300),    st.sidebar.number_input("Loyer MAX",      value=7700)
-sal_emp_min,    sal_emp_max    = st.sidebar.number_input("Salaires MIN", value=5400), st.sidebar.number_input("Salaires MAX",   value=6600)
-sal_men_min,    sal_men_max    = st.sidebar.number_input("Ménage MIN", value=900),   st.sidebar.number_input("Ménage MAX",     value=1100)
-elec_min,       elec_max       = st.sidebar.number_input("Élec. MIN",   value=3600), st.sidebar.number_input("Élec. MAX",      value=4400)
-internet_min,   internet_max   = st.sidebar.number_input("Internet MIN",value=270),  st.sidebar.number_input("Internet MAX",   value=330)
-pub_min,        pub_max        = st.sidebar.number_input("Pub MIN",     value=1800), st.sidebar.number_input("Pub MAX",        value=2200)
-divers_min,     divers_max     = st.sidebar.number_input("Divers MIN",  value=900),  st.sidebar.number_input("Divers MAX",     value=1100)
+    recompenses = []
+    stable_count = 0
 
-st.sidebar.markdown("---")
+    for ep in range(n_episodes):
+        s = etat_initial
+        total_r = 0
+        max_change = 0
 
-# === Autres paramètres ===
-jours_mois = st.sidebar.slider("Jours d’activité/mois", 20, 31, 30)
-associes = st.sidebar.number_input("Nombre d’associés", value=6)
-impot_taux = st.sidebar.slider("Taux d’impôt (%)", 0, 50, 20) / 100
+        for _ in range(max_steps):
+            a = choisir_action(s)
+            s2, r, done = faire_etape(s, a)
+            old_q = Q[s[0], s[1], a]
+            target = r + gamma * np.max(Q[s2[0], s2[1]])
+            Q[s[0], s[1], a] += alpha * (target - old_q)
+            max_change = max(max_change, abs(Q[s[0], s[1], a] - old_q))
+            s = s2
+            total_r += r
+            if done:
+                break
 
-st.sidebar.markdown("<h2 style='color:#6A5ACD'>🚀 Charges Investissement</h2>", unsafe_allow_html=True)
+        recompenses.append(total_r)
 
-# Équipements
-crepier_inv_min = st.sidebar.number_input("Crépier MIN (MAD)", value=6000)
-crepier_inv_max = st.sidebar.number_input("Crépier MAX (MAD)", value=8000)
-gauffre_inv_min = st.sidebar.number_input("Gauffrier MIN (MAD)", value=3000)
-gauffre_inv_max = st.sidebar.number_input("Gauffrier MAX (MAD)", value=4500)
-plaque_inv_min = st.sidebar.number_input("Plaque & Pancakes MIN (MAD)", value=500)
-plaque_inv_max = st.sidebar.number_input("Plaque & Pancakes MAX (MAD)", value=800)
-blender_inv_min = st.sidebar.number_input("Blender MIN (MAD)", value=1000)
-blender_inv_max = st.sidebar.number_input("Blender MAX (MAD)", value=2000)
-extracteur_inv_min = st.sidebar.number_input("Extracteur de jus MIN (MAD)", value=1500)
-extracteur_inv_max = st.sidebar.number_input("Extracteur de jus MAX (MAD)", value=3000)
-cafe_inv_min = st.sidebar.number_input("Machine à café MIN (MAD)", value=30000)
-cafe_inv_max = st.sidebar.number_input("Machine à café MAX (MAD)", value=30000)
-vitrine_inv_min = st.sidebar.number_input("Vitrine 2 glaces MIN (MAD)", value=15000)
-vitrine_inv_max = st.sidebar.number_input("Vitrine 2 glaces MAX (MAD)", value=20000)
-frigo_inv_min = st.sidebar.number_input("Réfrigérateur MIN (MAD)", value=5000)
-frigo_inv_max = st.sidebar.number_input("Réfrigérateur MAX (MAD)", value=5000)
-congel_inv_min = st.sidebar.number_input("Congélateur MIN (MAD)", value=3000)
-congel_inv_max = st.sidebar.number_input("Congélateur MAX (MAD)", value=3000)
-presse_inv_min = st.sidebar.number_input("Presse agrume MIN (MAD)", value=1000)
-presse_inv_max = st.sidebar.number_input("Presse agrume MAX (MAD)", value=2500)
-ustensiles_inv_min = st.sidebar.number_input("Ustensiles MIN (MAD)", value=4000)
-ustensiles_inv_max = st.sidebar.number_input("Ustensiles MAX (MAD)", value=4000)
-produits_inv_min = st.sidebar.number_input("Produits initiaux MIN (MAD)", value=20000)
-produits_inv_max = st.sidebar.number_input("Produits initiaux MAX (MAD)", value=20000)
+        if max_change < seuil_convergence:
+            stable_count += 1
+        else:
+            stable_count = 0
 
-# Aménagement / Design Intérieur
-peinture_inv_min = st.sidebar.number_input("Peinture & Travaux MIN (MAD)", value=10000)
-peinture_inv_max = st.sidebar.number_input("Peinture & Travaux MAX (MAD)", value=10000)
-deco_inv_min = st.sidebar.number_input("Décoration & Lumières MIN (MAD)", value=20000)
-deco_inv_max = st.sidebar.number_input("Décoration & Lumières MAX (MAD)", value=20000)
-etageres_inv_min = st.sidebar.number_input("Étagères MIN (MAD)", value=3500)
-etageres_inv_max = st.sidebar.number_input("Étagères MAX (MAD)", value=3500)
-comptoir_inv_min = st.sidebar.number_input("Comptoir MIN (MAD)", value=5000)
-comptoir_inv_max = st.sidebar.number_input("Comptoir MAX (MAD)", value=5000)
-tables_inv_min = st.sidebar.number_input("Tables + Chaises MIN (MAD)", value=2500)
-tables_inv_max = st.sidebar.number_input("Tables + Chaises MAX (MAD)", value=2500)
-panneaux_inv_min = st.sidebar.number_input("Panneaux extérieur MIN (MAD)", value=10000)
-panneaux_inv_max = st.sidebar.number_input("Panneaux extérieur MAX (MAD)", value=10000)
-tv_inv_min = st.sidebar.number_input("TV + Caisse MIN (MAD)", value=10000)
-tv_inv_max = st.sidebar.number_input("TV + Caisse MAX (MAD)", value=10000)
-cameras_inv_min = st.sidebar.number_input("Caméras MIN (MAD)", value=3000)
-cameras_inv_max = st.sidebar.number_input("Caméras MAX (MAD)", value=3000)
+        if stable_count >= episodes_sans_changement:
+            st.success(f"Convergence atteinte à l'épisode {ep+1}")
+            break
 
-# Divers investissement
-loyer2_inv_min = st.sidebar.number_input("Loyer 2 mois MIN (MAD)", value=18000)
-loyer2_inv_max = st.sidebar.number_input("Loyer 2 mois MAX (MAD)", value=18000)
-pubinv_min = st.sidebar.number_input("Publicités lancement MIN (MAD)", value=15000)
-pubinv_max = st.sidebar.number_input("Publicités lancement MAX (MAD)", value=15000)
+    return Q, recompenses
 
-# Totaux investissement
-equip_min = sum([crepier_inv_min, gauffre_inv_min, plaque_inv_min, blender_inv_min, extracteur_inv_min,
-                  cafe_inv_min, vitrine_inv_min, frigo_inv_min, congel_inv_min,
-                  presse_inv_min, ustensiles_inv_min, produits_inv_min])
-equip_max = sum([crepier_inv_max, gauffre_inv_max, plaque_inv_max, blender_inv_max, extracteur_inv_max,
-                  cafe_inv_max, vitrine_inv_max, frigo_inv_max, congel_inv_max,
-                  presse_inv_max, ustensiles_inv_max, produits_inv_max])
-amen_min = sum([peinture_inv_min, deco_inv_min, etageres_inv_min, comptoir_inv_min,
-                 tables_inv_min, panneaux_inv_min, tv_inv_min, cameras_inv_min])
-amen_max = sum([peinture_inv_max, deco_inv_max, etageres_inv_max, comptoir_inv_max,
-                 tables_inv_max, panneaux_inv_max, tv_inv_max, cameras_inv_max])
-div_inv_min = loyer2_inv_min + pubinv_min
-div_inv_max = loyer2_inv_max + pubinv_max
-total_inv_min = equip_min + amen_min + div_inv_min
-total_inv_max = equip_max + amen_max + div_inv_max
-# Default default values for charges mensuelles calculation
-loyer = 7000
-sal_emp = 6000
-sal_men = 1000
-elec = 4000
-internet = 300
-pub = 2000
-divers = 1000
-# === Total Charges Mensuelles ===
-charges_mensuelles = loyer + sal_emp + sal_men + elec + internet + pub + divers
+if st.button("Lancer l'apprentissage"):
+    Q, recompenses = q_learning()
 
+    # --- Affichage Q-Table (meilleure valeur par case) ---
+    st.subheader("Q-Table (Valeur maximale par case)")
+    grille_q = np.round(np.max(Q, axis=2), 2)  # Max Q par état
+    grille_df = pd.DataFrame(grille_q, index=[f"Ligne {i+1}" for i in range(n_rows)],
+                                         columns=[f"Colonne {j+1}" for j in range(n_cols)])
+    st.dataframe(grille_df.style.format(precision=2).background_gradient(cmap="YlGn").set_properties(**{'font-size': '16px'}), height=(n_rows*70))
 
-# === Construction des dicts ===
-commandes_min = {
-    "crepe": crepe_min, "gaufre": gaufre_min, "pancake": pancake_min,
-    "glace": glace_min, "bowl": bowl_min, "jus": jus_min, "boisson": boisson_min
-}
-commandes_max = {
-    "crepe": crepe_max, "gaufre": gaufre_max, "pancake": pancake_max,
-    "glace": glace_max, "bowl": bowl_max, "jus": jus_max, "boisson": boisson_max
-}
-charges_min = [loyer_min, sal_emp_min, sal_men_min, elec_min, internet_min, pub_min, divers_min]
-charges_max = [loyer_max, sal_emp_max, sal_men_max, elec_max, internet_max, pub_max, divers_max]
+    # --- Affichage Politique Déduite ---
+    st.subheader("Politique Déduite (Meilleure direction par case)")
+    actions = ['↑', '↓', '←', '→']
+    politique = np.empty((n_rows, n_cols), dtype=object)
+    for i in range(n_rows):
+        for j in range(n_cols):
+            meilleure_action = np.argmax(Q[i, j])
+            politique[i, j] = actions[meilleure_action]
+    
+    politique_df = pd.DataFrame(politique, index=[f"Ligne {i+1}" for i in range(n_rows)],
+                                          columns=[f"Colonne {j+1}" for j in range(n_cols)])
+    st.dataframe(politique_df.style.set_properties(**{'text-align': 'center', 'font-size': '22px'}), height=(n_rows*70))
 
-# === Calculs min / max ===
-# Revenus
-revenu_min = sum(commandes_min[k] * v for k, v in [
-    ("crepe", prix_crepe), ("gaufre", prix_gaufre), ("pancake", prix_pancake),
-    ("glace", prix_glace), ("bowl", prix_bowl), ("jus", prix_jus),
-    ("boisson", prix_boisson)
-]) * jours_mois
-revenu_max = sum(commandes_max[k] * v for k, v in [
-    ("crepe", prix_crepe), ("gaufre", prix_gaufre), ("pancake", prix_pancake),
-    ("glace", prix_glace), ("bowl", prix_bowl), ("jus", prix_jus),
-    ("boisson", prix_boisson)
-]) * jours_mois
-
-# Coûts
-cout_min = sum(commandes_min[k] * v for k, v in [
-    ("crepe", cout_crepe), ("gaufre", cout_gaufre), ("pancake", cout_pancake),
-    ("glace", cout_glace), ("bowl", cout_bowl), ("jus", cout_jus),
-    ("boisson", cout_boisson)
-]) * jours_mois
-cout_max = sum(commandes_max[k] * v for k, v in [
-    ("crepe", cout_crepe), ("gaufre", cout_gaufre), ("pancake", cout_pancake),
-    ("glace", cout_glace), ("bowl", cout_bowl), ("jus", cout_jus),
-    ("boisson", cout_boisson)
-]) * jours_mois
-
-# Charges mensuelles totales
-ch_min = sum(charges_min)
-ch_max = sum(charges_max)
-
-# Bénéfice avant impôt
-baimin = revenu_min - cout_max - ch_max
-baimax = revenu_max - cout_min - ch_min
-
-# Impôt
-impot_min = max(0, baimin * impot_taux)
-impot_max = max(0, baimax * impot_taux)
-
-# Profit net
-pn_min = baimin - impot_min
-pn_max = baimax - impot_max
-
-# Part par associé
-pa_min = pn_min / associes
-pa_max = pn_max / associes
-
-# Moyennes
-revenu_moy = (revenu_min + revenu_max) / 2
-cout_moy = (cout_min + cout_max) / 2
-ch_moy = (ch_min + ch_max) / 2
-bai_moy = (baimin + baimax) / 2
-impot_moy = (impot_min + impot_max) / 2
-pn_moy = (pn_min + pn_max) / 2
-pa_moy = (pa_min + pa_max) / 2
-
-# === Affichage ===
-st.subheader("📊 Résultats Mensuels")
-df = pd.DataFrame([
-    {"Metric": "Revenu Brut",      "Min": revenu_min,   "Max": revenu_max,   "Moyenne": revenu_moy},
-    {"Metric": "Coût Total",       "Min": cout_min,     "Max": cout_max,     "Moyenne": cout_moy},
-    {"Metric": "Charges Mensuelles","Min": ch_min,      "Max": ch_max,       "Moyenne": ch_moy},
-    {"Metric": "Bénéf. Avant Impôt","Min": baimin,      "Max": baimax,       "Moyenne": bai_moy},
-    {"Metric": "Impôt",            "Min": impot_min,    "Max": impot_max,    "Moyenne": impot_moy},
-    {"Metric": "Profit Net",       "Min": pn_min,       "Max": pn_max,       "Moyenne": pn_moy},
-    {"Metric": "Part/Assoc",       "Min": pa_min,       "Max": pa_max,       "Moyenne": pa_moy},
-])
-st.dataframe(df.style.format({"Min": "{:,.0f}", "Max": "{:,.0f}", "Moyenne": "{:,.0f}"}))
-
-st.subheader("📈 Graphique Comparatif")
-fig, ax = plt.subplots(figsize=(10,4))
-ax.bar(
-    ["PN Min","PN Moy","PN Max"],
-    [pn_min, pn_moy, pn_max],
-    alpha=0.7
-)
-ax.set_ylabel("MAD")
-ax.set_title("Profit Net\nPire cas / Moyenne / Meilleur cas")
-ax.grid(axis="y", linestyle="--")
-st.pyplot(fig)
-
-st.subheader("💼 Charges d'Investissement")
-df_inv = pd.DataFrame([
-    {"Catégorie": "Équipements",                  "Min": equip_min,      "Max": equip_max,      "Moyenne": (equip_min+equip_max)/2},
-    {"Catégorie": "Aménagement / Design Intérieur","Min": amen_min,       "Max": amen_max,       "Moyenne": (amen_min+amen_max)/2},
-    {"Catégorie": "Divers",                       "Min": div_inv_min,    "Max": div_inv_max,    "Moyenne": (div_inv_min+div_inv_max)/2},
-    {"Catégorie": "TOTAL",                        "Min": total_inv_min,  "Max": total_inv_max,  "Moyenne": (total_inv_min+total_inv_max)/2},
-])
-st.dataframe(df_inv.style.format({"Min": "{:,.0f}", "Max": "{:,.0f}", "Moyenne": "{:,.0f}"}))
-
-# Graphique charges investissement
-fig2, ax2 = plt.subplots(figsize=(10,4))
-ax2.bar(
-    ["Inv Min","Inv Moy","Inv Max"],
-    [total_inv_min,(total_inv_min+total_inv_max)/2,total_inv_max],
-    color=['#ffa07a','#20b2aa','#ffa07a']
-)
-ax2.set_ylabel("MAD")
-ax2.set_title("Charges d'Investissement\nPire cas / Moyenne / Meilleur cas")
-ax2.grid(axis="y", linestyle="--")
-st.pyplot(fig2)
-
-# === Sensibilité globales selon commandes totales/jour ===
-st.markdown("---")
-st.subheader("🔍 Sensibilité selon commandes totales/jour")
-
-# Calcul du panier moyen
-avg_price = (prix_crepe + prix_gaufre + prix_pancake + prix_glace + prix_bowl + prix_jus + prix_boisson) / 7
-avg_cost  = (cout_crepe + cout_gaufre + cout_pancake + cout_glace + cout_bowl + cout_jus + cout_boisson) / 7
-
-# Charge mensuelle fixe (moyenne)
-monthly_charges = charges_mensuelles
-
-rows = []
-for cmds in range(10, 101, 10):
-    revenu = cmds * avg_price * jours_mois
-    cost   = cmds * avg_cost  * jours_mois
-    ba     = revenu - cost - monthly_charges
-    imp    = max(0, ba * impot_taux)
-    pn     = ba - imp
-    rows.append({
-        "Cmds/jour": cmds,
-        "Revenu Brut": revenu,
-        "Coût Total": cost,
-        "Bénéf. Avant Impôt": ba,
-        "Impôt": imp,
-        "Profit Net": pn
-    })
-df_sens = pd.DataFrame(rows)
-st.dataframe(df_sens.style.format({"Cmds/jour": "{:d}", "Revenu Brut":"{:,.0f}", "Coût Total":"{:,.0f}", "Bénéf. Avant Impôt":"{:,.0f}", "Impôt":"{:,.0f}", "Profit Net":"{:,.0f}"}))
+    # --- Courbe d'apprentissage ---
+    st.subheader("Courbe d'Apprentissage")
+    fig, ax = plt.subplots()
+    ax.plot(recompenses)
+    ax.set_xlabel("Épisode")
+    ax.set_ylabel("Récompense Totale")
+    ax.grid(True)
+    st.pyplot(fig)
